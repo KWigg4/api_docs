@@ -10,8 +10,10 @@ demo_raw <- REDCapR::redcap_report(
 )$data 
 # 11/02: nrow 100, ncol=14
 
+# Saved as an RDS and a timestamped .csv: 
+saveRDS(demo_raw, here::here("DataRaw/demo_raw_.RDS"))
 write.csv(
-	meta,
+	demo_raw,
 	here::here(paste0("DataRaw/demo_",today,".csv")),
 	row.names = FALSE,
 	na=""
@@ -29,3 +31,10 @@ meta <- REDCapR::redcap_metadata_read(
 	dplyr::select(
 		field_name, field_type, field_label
 		, dplyr::starts_with(c("select","text_validation_type"))) 
+
+write.csv(
+	meta,
+	here::here(paste0("DataRaw/demo_",today,".csv")),
+	row.names = FALSE,
+	na=""
+)
