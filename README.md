@@ -1,39 +1,31 @@
 # REDCap API Training
 
-Training materials for extracting REDCap data through the API using R and SAS.
-
 ## Get the training materials
 
 Clone the repository:
 
-git clone <repository-url>
+git clone https://github.com/KWigg4/api_docs.git
 
-If you already cloned the repository, retrieve the latest version:
+Already have it?
 
 git pull
 
 ## Training workflow
 
-1. Request REDCap API access.
-2. Store the API token securely.
-3. Run the R or SAS example.
-4. Retrieve data from REDCap.
-5. Save the raw extract to DataRaw.
+1. Request API access in REDCap
+2. Store your API token securely
+3. Run the R or SAS example
+4. Retrieve the REDCap report
+5. Save the extract to DataRaw
+
+## Code
+
+R:
+Code/redcap_api.R
+
+SAS:
+Code/redcap_api.sas
 
 ## Important
 
-Never store API tokens in:
-- R or SAS code
-- Git
-- GitHub
-- shared project folders
-
-Credentials should be stored separately from the training code.
-
-## Examples
-
-### R
-Code/01_get_redcap.R
-
-### SAS
-Code/01_get_redcap_sas.sas
+Never put a REDCap API token directly in your code or commit it to Git.
