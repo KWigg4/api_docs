@@ -2,3 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+.Rproj
+.Renviron
+*.env
+*token*
+DataRaw/*
+!DataRaw/README.md
+
