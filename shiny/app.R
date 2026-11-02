@@ -236,56 +236,18 @@ ui <- fluidPage(
 					),
 					
 					tags$div(class = "callout", tags$strong("Design principle: "), "Credentials stay separate from the code and extracted data."),
-					
 					tags$h3("Get the training files"),
-					tags$p("You can use Git regardless of whether you are completing the training in R or SAS."),
-					step_item(
-						1,
-						"Open a terminal",
-						"R users can use the Terminal in RStudio. SAS users can use Windows Terminal, Command Prompt, or PowerShell."
-					),
-					step_item(
-						2,
-						"Choose where to save the training folder",
-						"Navigate to the folder where you want the api_docs training folder to be created."
-					),
-					step_item(
-						3,
-						"Clone the repository once",
-						"Copy the command below into the terminal and press Enter. Git will create a new api_docs folder containing the training materials."
-					),
-					copy_box(
-						"copy_clone",
-						"Clone command",
-						paste("git clone", repo_url)
-					),
-					
-					step_item(
-						4,
-						"Choose your training path",
-						"Open the api_docs folder. R users will use Code/01_get_redcap_R.R; SAS users will use Code/01_get_redcap_sas.sas."
-					),
+					tags$p("Git works for both R and SAS users."),
+					step_item(1, "Open a terminal", "R users can use the RStudio Terminal. SAS users can use Windows Terminal, Command Prompt, or PowerShell."),
+					step_item(2, "Choose a parent folder", "Navigate to the location where you want Git to create the api_docs training folder."),
+					step_item(3, "Clone the repository once", "Paste the command below into the terminal and press Enter."),
+					copy_box("copy_clone", "Clone command", paste("git clone", repo_url)),
+					step_item(4, "Choose your training path", "R users will open Code/01_get_redcap_R.R. SAS users will open Code/01_get_redcap_sas.sas."),
 					
 					tags$h3("Returning later?"),
-					
-					tags$p(
-						"You do not need to clone the repository again. Open a terminal in your existing api_docs folder and run:"
-					),
-					
-					copy_box(
-						"copy_pull",
-						"Update command",
-						"git pull"
-					),
-					
-					tags$div(
-						class = "callout",
-						tags$strong("Git in this training: "),
-						tags$code("git clone"),
-						" gets the training repository the first time. ",
-						tags$code("git pull"),
-						" retrieves the latest training materials after that."
-					),
+					tags$p("Open a terminal in your existing api_docs folder and retrieve the latest committed materials:"),
+					copy_box("copy_pull", "Update command", "git pull"),
+					tags$div(class = "callout", tags$strong("Remember: "), tags$code("git clone"), " gets the repository once; ", tags$code("git pull"), " updates the copy you already have."),
 					checkboxInput("done_start", "I have cloned or pulled the training materials.", FALSE)
 				)
 			),
@@ -297,33 +259,16 @@ ui <- fluidPage(
 					"Key terms",
 					tags$div(
 						class = "terms-grid",
-						term_card(
-							"API"
-							, "Application Programming Interface. A structured way for one system to request data from another system."),
-						term_card(
-							"API token"
-							, "A unique secret used to authorize access to a particular REDCap project."),
-						term_card(
-							"Endpoint or URI"
-							, "The REDCap web address that receives the API request."),
-						term_card(
-							"Request"
-							, "The call sent to REDCap, including the token and requested export settings."),
-						term_card(
-							"Response"
-							, "The data returned by REDCap after the request is processed."),
-						term_card(
-							"Environment variable"
-							, "A value stored outside the program and retrieved when the program runs."),
-						term_card(
-							"DataRaw"
-							, "The protected project location for unchanged source data retrieved from REDCap."),
-						term_card(
-							"Automation"
-							, "A scheduled process that runs the extraction without requiring manual steps.")
+						term_card("API", "A structured way for one system to request data from another system."),
+						term_card("API token", "A unique secret used to authorize access to a particular REDCap project."),
+						term_card("Endpoint or URI", "The REDCap web address that receives the API request."),
+						term_card("Request", "The call sent to REDCap, including the token and requested export settings."),
+						term_card("Response", "The data returned by REDCap after the request is processed."),
+						term_card("Environment variable", "A value stored outside the program and retrieved when the program runs."),
+						term_card("DataRaw", "The protected project location for unchanged source data retrieved from REDCap."),
+						term_card("Automation", "A scheduled process that runs the extraction without requiring manual steps.")
 					),
-					checkboxInput(
-						"done_terms", "I reviewed the key terms.", FALSE)
+					checkboxInput("done_terms", "I reviewed the key terms.", FALSE)
 				)
 			),
 			
@@ -361,131 +306,41 @@ ui <- fluidPage(
 					tags$p("The REDCap URI and API token should be stored outside the R or SAS program and outside the project directory."),
 					
 					tags$div(
-						class = "two-column",
-						tags$div(
-							class = "code-file",
-							
-							tags$h3("Option 1: Windows User environment variables"),
-							
-							tags$p(
-								"Create the REDCap URI and project-specific token under Windows 
-    User variables."
-							),
-							
-							tags$ul(
-								tags$li(
-									tags$code("redcap_uri"),
-									" → REDCap API web address"
-								),
-								tags$li(
-									tags$code("token_xxx"),
-									" → project-specific REDCap token"
-								)
-							),
-							tags$img(
-								src = "images/img_env_variables.png",
-								class = "training-image",
-								alt = "Windows User Environment Variables setup"
-							),
-							tags$div(
-								class = "callout",
-								tags$strong("After adding or changing the variables: "),
-								"completely close and reopen RStudio or SAS before testing them."
-							),
-							tags$h4("Check that the token is available"),
-							tags$p("R:"),
-							code_box('nchar(Sys.getenv("token_xxx"))'),
-							tags$p("SAS:"),
-							code_box("%put Token length=%length(%sysget(token_xxx));")
+						class = "code-file",
+						tags$h3("Option 1: Windows User environment variables"),
+						tags$p("Create the REDCap URI and project-specific token under Windows User variables."),
+						tags$ul(
+							tags$li(tags$code("redcap_uri"), " → REDCap API web address"),
+							tags$li(tags$code("token_xxx"), " → project-specific REDCap token")
 						),
-						
-						tags$div(
-							class = "code-file",
-							tags$h3("Option 2: Secure text file or .Renviron"),
-							tags$p(
-								"Store the token in a protected .txt file in a secure location 
-    outside the project/root directory, such as C:/."
-							),
-							tags$h4("For R: use a user-level .Renviron file"),
-							
-							step_item(
-								1,
-								"Open your .Renviron file",
-								"Run this command in the R console."
-							),
-							
-							code_box("usethis::edit_r_environ()"),
-							
-							step_item(
-								2,
-								"Add the REDCap URI and token",
-								"Store the values in .Renviron, not in your project directory."
-							),
-							
-							code_box(
-								paste(
-									'redcap_uri = "https://redcap.ucdenver.edu/api/"',
-									'token_xxx = "YOUR_PROJECT_TOKEN"',
-									sep = "\n"
-								)
-							),
-							
-							tags$div(
-								class = "callout security-callout",
-								tags$strong("Important: "),
-								"Always restart R after updating the .Renviron file."
-							),
-							
-							step_item(
-								3,
-								"Call the stored values",
-								"Your R code retrieves the URI and token when it runs."
-							),
-							
-							code_box(
-								paste(
-									"raw0 <- REDCapR::redcap_report(",
-									'  redcap_uri = Sys.getenv("redcap_uri"),',
-									'  token = Sys.getenv("token_xxx"),',
-									"  ...",
-									")",
-									sep = "\n"
-								)
-							),
-							tags$h4("Secure .txt file"),
-							tags$p(
-								"A protected text file can also be used. Store it somewhere secure 
-    outside the project/root directory and do not track it with Git."
-							),
-							tags$div(
-								class = "callout",
-								tags$strong("Key rule: "),
-								"Credentials stay outside the project code and project/root directory."
-							),
-							tags$h4("R helper packages for API calls"),
-							
-							tags$ul(
-								tags$li(
-									tags$strong("REDCapR package: "),
-									tags$a(
-										"R utilities for interacting with REDCap",
-										href = "https://github.com/OuhscBbmc/REDCapR",
-										target = "_blank"
-									)
-								),
-								tags$li(
-									tags$strong("qualtRics package: "),
-									tags$a(
-										"Introduction to qualtRics",
-										href = "https://docs.ropensci.org/qualtRics/",
-										target = "_blank"
-									)
-								)
-							)
+						tags$img(src = "images/img_env_variables.png", class = "training-image", alt = "Windows User Environment Variables setup"),
+						tags$div(class = "callout", tags$strong("After adding or changing the variables: "), "completely close and reopen RStudio or SAS before testing them."),
+						tags$h4("Check that the token is available"),
+						tags$p("R:"), code_box('nchar(Sys.getenv("token_xxx"))'),
+						tags$p("SAS:"), code_box("%put Token length=%length(%sysget(token_xxx));")
+					),
+					
+					tags$div(style = "height: 20px;"),
+					
+					tags$div(
+						class = "code-file",
+						tags$h3("Option 2: Secure text file or .Renviron"),
+						tags$p("Store a protected .txt file in a secure location outside the project/root directory, such as C:/, and do not track it with Git."),
+						tags$h4("For R: use a user-level .Renviron file"),
+						step_item(1, "Open .Renviron", "Run this command in the R console."),
+						code_box("usethis::edit_r_environ()"),
+						step_item(2, "Add the REDCap URI and token", "Store the values in the user-level .Renviron file, not in the project directory."),
+						code_box(paste('redcap_uri="https://redcap.ucdenver.edu/api/"', 'token_xxx="YOUR_PROJECT_TOKEN"', sep = "\n")),
+						tags$div(class = "callout security-callout", tags$strong("Important: "), "Always restart R after updating .Renviron."),
+						step_item(3, "Call the stored values", "The R program retrieves the URI and token when it runs."),
+						code_box(paste("raw0 <- REDCapR::redcap_report(", '  redcap_uri = Sys.getenv("redcap_uri"),', '  token = Sys.getenv("token_xxx"),', "  ...", ")", sep = "\n")),
+						tags$h4("R helper packages for API calls"),
+						tags$ul(
+							tags$li(tags$strong("REDCapR package: "), tags$a("R utilities for interacting with REDCap", href = "https://github.com/OuhscBbmc/REDCapR", target = "_blank")),
+							tags$li(tags$strong("qualtRics package: "), tags$a("Introduction to qualtRics", href = "https://docs.ropensci.org/qualtRics/", target = "_blank"))
 						)
 					),
 					
-					tags$div(class = "callout", "After creating or changing environment variables, completely close and reopen RStudio or SAS before testing them."),
 					checkboxInput("done_storage", "My REDCap URI and token are stored outside the code.", FALSE)
 				)
 			),
@@ -565,356 +420,92 @@ ui <- fluidPage(
 			),
 			
 			# Automation --------------------------------------------------------
-			# Automation --------------------------------------------------------
 			tabPanel(
 				"Automation",
 				section_card(
 					"Automation with Windows Task Scheduler",
-					
-					tags$p(
-						paste(
-							"After testing the API extraction manually,",
-							"the same program can be scheduled to run automatically."
-						)
-					),
+					tags$p("After testing the API extraction manually, the same program can be scheduled to run automatically."),
 					
 					tabsetPanel(
 						type = "tabs",
 						
-						# R ------------------------------------------------------------
 						tabPanel(
 							"R",
-							
 							tags$h3("R automation with taskscheduleR"),
-							
-							tags$p(
-								paste(
-									"The taskscheduleR package can create the initial",
-									"Windows scheduled task directly from R."
-								)
-							),
-							
-							step_item(
-								1,
-								"Create the scheduled task",
-								"Use taskscheduleR::taskscheduler_create() to schedule the R script."
-							),
-							
-							code_box(
-								paste(
-									"taskscheduleR::taskscheduler_create(",
-									'  taskname = "REDCap_API",',
-									'  rscript = "Code/01_get_redcap_R.R",',
-									'  schedule = "DAILY"',
-									")",
-									sep = "\n"
-								)
-							),
-							
-							step_item(
-								2,
-								"Review Windows Task Scheduler",
-								paste(
-									"Open the created task in Windows Task Scheduler",
-									"and adjust the task properties as needed."
-								)
-							),
-							
-							step_item(
-								3,
-								"Run the extraction",
-								paste(
-									"The scheduled R program retrieves the stored credentials",
-									"and writes the REDCap extract to DataRaw."
-								)
-							)
+							tags$p("The taskscheduleR package can create the initial Windows scheduled task directly from R."),
+							step_item(1, "Create the scheduled task", "Use taskscheduleR::taskscheduler_create() to schedule the R script."),
+							code_box(paste(
+								"taskscheduleR::taskscheduler_create(",
+								'  taskname = "REDCap_API",',
+								'  rscript = "Code/01_get_redcap_R.R",',
+								'  schedule = "DAILY"',
+								")",
+								sep = "\n"
+							)),
+							step_item(2, "Review Windows Task Scheduler", "Open the created task and adjust its properties as needed."),
+							step_item(3, "Run the extraction", "The scheduled R program retrieves the stored credentials and writes the REDCap extract to DataRaw.")
 						),
 						
-						# SAS ----------------------------------------------------------
 						tabPanel(
 							"SAS",
-							
 							tags$h3("SAS automation"),
-							
-							tags$p(
-								paste(
-									"A SAS program can be run in batch mode and launched",
-									"by Windows Task Scheduler."
-								)
-							),
-							
-							step_item(
-								1,
-								"Create a batch command",
-								paste(
-									"Use the SAS executable to run the .sas program",
-									"in batch mode."
-								)
-							),
-							
-							code_box(
-								paste(
-									'"C:\\Program Files\\SASHome\\SASFoundation\\9.4\\sas.exe" ^',
-									'  -sysin "C:\\path\\to\\Code\\01_get_redcap_sas.sas" ^',
-									'  -log "C:\\path\\to\\Logs\\redcap_api.log"',
-									sep = "\n"
-								)
-							),
-							
-							tags$p(
-								class = "small-note",
-								paste(
-									"The SAS executable location varies by installation.",
-									"Replace the example paths with the paths on your computer."
-								)
-							),
-							
-							step_item(
-								2,
-								"Create the scheduled task",
-								paste(
-									"Configure Windows Task Scheduler to run the batch command",
-									"on the desired schedule."
-								)
-							),
-							
-							step_item(
-								3,
-								"Run the extraction",
-								paste(
-									"The scheduled SAS program retrieves the stored credentials",
-									"and writes the REDCap extract to DataRaw."
-								)
-							)
+							tags$p("A SAS program can be run in batch mode and launched by Windows Task Scheduler."),
+							step_item(1, "Create a batch command", "Use the SAS executable to run the .sas program in batch mode."),
+							code_box(paste(
+								'"C:\\Program Files\\SASHome\\SASFoundation\\9.4\\sas.exe" ^',
+								'  -sysin "C:\\path\\to\\Code\\01_get_redcap_sas.sas" ^',
+								'  -log "C:\\path\\to\\Logs\\redcap_api.log"',
+								sep = "\n"
+							)),
+							tags$p(class = "small-note", "The SAS executable location varies by installation. Replace the example paths with the paths on your computer."),
+							step_item(2, "Create the scheduled task", "Configure Windows Task Scheduler to run the batch command on the desired schedule."),
+							step_item(3, "Run the extraction", "The scheduled SAS program retrieves the stored credentials and writes the REDCap extract to DataRaw.")
 						)
 					),
 					
-					tags$div(
-						class = "callout",
-						tags$strong("Project-relative paths: "),
-						paste(
-							"Use project-relative paths so scheduled programs",
-							"can reliably locate DataRaw and other project folders."
-						)
-					),
-					
-					tags$div(
-						class = "callout security-callout",
-						tags$strong("Windows password changes: "),
-						paste(
-							"A password change may interrupt scheduled processing.",
-							"Open the task properties and re-enter the updated password",
-							"when prompted."
-						)
-					),
-					
-					checkboxInput(
-						"done_automation",
-						"I reviewed the automation workflow.",
-						FALSE
-					)
+					tags$div(class = "callout", tags$strong("Project-relative paths: "), "Use project-relative paths so scheduled programs can reliably locate DataRaw and other project folders."),
+					tags$div(class = "callout security-callout", tags$strong("Windows password changes: "), "A password change may interrupt scheduled processing. Open the task properties and re-enter the updated password when prompted."),
+					checkboxInput("done_automation", "I reviewed the automation workflow.", FALSE)
 				)
 			),
 			
-			# SAS automation
-			# Automation --------------------------------------------------------
+			# Knowledge Check ---------------------------------------------------
 			tabPanel(
-				"Automation",
+				"Knowledge Check",
 				section_card(
-					"Automation with Windows Task Scheduler",
-					tags$p(
-						"After testing the API extraction manually, the same R or SAS program can be scheduled to run automatically."
+					"Check your understanding",
+					radioButtons(
+						"q1", "1. Where should the API token be stored for this training?",
+						choices = c("Inside the R or SAS program" = "a", "In a User environment variable or protected credential file" = "b", "Inside DataRaw" = "c", "In the Git repository" = "d"),
+						selected = character(0)
 					),
-					tags$div(
-						class = "two-column",
-						# R automation
-						tags$div(
-							class = "code-file",
-							tags$h3("R automation"),
-							
-							tags$p(
-								"The taskscheduleR package can create a Windows scheduled task directly from R."
-							),
-							
-							step_item(
-								1,
-								"Create the scheduled task",
-								"Use taskscheduleR::taskscheduler_create() to schedule the R script."
-							),
-							
-							code_box(
-								paste(
-									"taskscheduleR::taskscheduler_create(",
-									'  taskname = "REDCap_API",',
-									'  rscript  = "Code/01_get_redcap_R.R",',
-									'  schedule = "DAILY"',
-									")",
-									sep = "\n"
-								)
-							),
-							
-							step_item(
-								2,
-								"Review Windows Task Scheduler",
-								"Open the task in Windows Task Scheduler and adjust the task properties as needed."
-							),
-							
-							step_item(
-								3,
-								"Run the extraction",
-								"The scheduled R program retrieves the stored credentials and writes the REDCap extract to DataRaw."
-							)
-						),
-						
-						# SAS automation
-						tags$div(
-							class = "code-file",
-							tags$h3("SAS automation"),
-							
-							tags$p(
-								"SAS programs can be run in batch mode and launched by Windows Task Scheduler."
-							),
-							
-							step_item(
-								1,
-								"Create a batch command",
-								"Use the local SAS executable to run the .sas program in batch mode."
-							),
-							
-							code_box(
-								paste(
-									'"C:\\Program Files\\SASHome\\SASFoundation\\9.4\\sas.exe" ^',
-									'  -sysin "C:\\path\\to\\Code\\01_get_redcap_sas.sas" ^',
-									'  -log "C:\\path\\to\\Logs\\redcap_api.log"',
-									sep = "\n"
-								)
-							),
-							
-							tags$p(
-								class = "small-note",
-								"The SAS executable path varies by installation. Replace the example paths with the paths on your computer."
-							),
-							
-							step_item(
-								2,
-								"Create the Windows scheduled task",
-								"Configure Windows Task Scheduler to run the batch command on the desired schedule."
-							),
-							
-							step_item(
-								3,
-								"Run the extraction",
-								"The scheduled SAS program retrieves the stored credentials and writes the REDCap extract to DataRaw."
-							)
-						)
-					),
+					uiOutput("q1_feedback"),
 					
-					tags$div(
-						class = "callout",
-						tags$strong("Project-relative paths: "),
-						"The example programs derive or use project-relative paths so scheduled runs can still locate DataRaw."
+					radioButtons(
+						"q2", "2. Why should credentials remain outside the code?",
+						choices = c("So the program runs faster" = "a", "So secrets are not stored in scripts or committed to Git" = "b", "Because REDCap changes the token every time the program runs" = "c", "Because environment variables are required for every API" = "d"),
+						selected = character(0)
 					),
+					uiOutput("q2_feedback"),
 					
-					tags$div(
-						class = "callout security-callout",
-						tags$strong("Windows password changes: "),
-						paste(
-							"A password change may interrupt scheduled processing.",
-							"Open the task properties, select OK, and re-enter the new password when prompted."
-						)
+					radioButtons(
+						"q3", "3. What is the purpose of DataRaw?",
+						choices = c("Store unchanged source extracts" = "a", "Store project credentials" = "b", "Replace the REDCap project" = "c", "Store only final reports" = "d"),
+						selected = character(0)
 					),
+					uiOutput("q3_feedback"),
 					
-					checkboxInput(
-						"done_automation",
-						"I reviewed the automation workflow.",
-						FALSE
-					)
+					radioButtons(
+						"q4", "4. What does git pull do in this training?",
+						choices = c("Runs the REDCap API request" = "a", "Retrieves the latest committed training materials" = "b", "Stores the API token" = "c", "Creates the DataRaw folder" = "d"),
+						selected = character(0)
+					),
+					uiOutput("q4_feedback"),
+					checkboxInput("done_quiz", "I completed the knowledge check.", FALSE)
 				)
-			),
-			
-			code_box(
-				paste(
-					'"C:\\Program Files\\SASHome\\SASFoundation\\9.4\\sas.exe" ^',
-					'  -sysin "C:\\path\\to\\Code\\01_get_redcap_sas.sas" ^',
-					'  -log "C:\\path\\to\\Logs\\redcap_api.log"',
-					sep = "\n"
-				)
-			),
-			
-			tags$p(
-				class = "small-note",
-				"The SAS executable path varies by installation. Replace the example paths with the paths on your computer."
-			),
-			step_item(
-				2,
-				"Create the Windows scheduled task",
-				"Configure Windows Task Scheduler to run the batch command on the desired schedule."
-			),
-			step_item(
-				3,
-				"Run the extraction",
-				"The scheduled SAS program retrieves the stored credentials and writes the REDCap extract to DataRaw."
 			)
 		)
-	),
-	tags$div(
-		class = "callout",
-		tags$strong("Project-relative paths: "),
-		"The example programs derive or use project-relative paths so scheduled runs can still locate DataRaw."
-	),
-	tags$div(
-		class = "callout security-callout",
-		tags$strong("Windows password changes: "),
-		paste(
-			"A password change may interrupt scheduled processing.",
-			"Open the task properties, select OK, and re-enter the new password when prompted."
-		)
-	),
-	
-	checkboxInput(
-		"done_automation",
-		"I reviewed the automation workflow.",
-		FALSE
 	)
-)
-),
-
-# Knowledge Check ---------------------------------------------------
-tabPanel(
-	"Knowledge Check",
-	section_card(
-		"Check your understanding",
-		radioButtons(
-			"q1", "1. Where should the API token be stored for this training?",
-			choices = c("Inside the R or SAS program" = "a", "In a User environment variable or protected credential file" = "b", "Inside DataRaw" = "c", "In the Git repository" = "d"),
-			selected = character(0)
-		),
-		
-		uiOutput("q1_feedback"),
-		radioButtons(
-			"q2", "2. Why should credentials remain outside the code?",
-			choices = c("So the program runs faster" = "a", "So secrets are not stored in scripts or committed to Git" = "b", "Because REDCap changes the token every time the program runs" = "c", "Because environment variables are required for every API" = "d"),
-			selected = character(0)
-		),
-		
-		uiOutput("q2_feedback"),
-		radioButtons(
-			"q3", "3. What is the purpose of DataRaw?",
-			choices = c("Store unchanged source extracts" = "a", "Store project credentials" = "b", "Replace the REDCap project" = "c", "Store only final reports" = "d"),
-			selected = character(0)
-		),
-		uiOutput("q3_feedback"),
-		
-		radioButtons(
-			"q4", "4. What does git pull do in this training?",
-			choices = c("Runs the REDCap API request" = "a", "Retrieves the latest committed training materials" = "b", "Stores the API token" = "c", "Creates the DataRaw folder" = "d"),
-			selected = character(0)
-		),
-		uiOutput("q4_feedback"),
-		checkboxInput("done_quiz", "I completed the knowledge check.", FALSE)
-	)
-)
-)
 )
 
 # Server ------------------------------------------------------------------
@@ -937,7 +528,11 @@ server <- function(input, output, session) {
 		)
 	})
 	
-	output$q1_feedback <- renderUI(choice_feedback(input$q1, "b", "Correct. Store the token in a User environment variable or another protected credential file.", "Not quite. The token should remain outside the project code and outside Git."))
+	output$q1_feedback <- renderUI(
+		choice_feedback(
+			input$q1
+			, "b"
+			, "Correct. Store the token in a User environment variable or another protected credential file.", "Not quite. The token should remain outside the project code and outside Git."))
 	output$q2_feedback <- renderUI(choice_feedback(input$q2, "b", "Correct. Credentials should not be stored in scripts or committed to Git.", "Not quite. The goal is to separate credentials from the code and repository."))
 	output$q3_feedback <- renderUI(choice_feedback(input$q3, "a", "Correct. DataRaw preserves the unchanged source extract returned through the API.", "Not quite. DataRaw is used for unchanged source data, not credentials or final outputs."))
 	output$q4_feedback <- renderUI(choice_feedback(input$q4, "b", "Correct. git pull retrieves the latest committed training materials from the remote repository.", "Not quite. git pull updates the local clone from the remote training repository."))
