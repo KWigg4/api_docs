@@ -21,8 +21,11 @@ section_card <- function(title, ...) {
 step_item <- function(number, title, text) {
 	tags$div(
 		class = "step-item",
-		tags$span(class = "step-number", number),
-		tags$div(tags$strong(title), tags$p(text))
+		tags$span(class = "step-number", paste0(number, ".")),
+		tags$div(
+			tags$strong(title),
+			tags$p(text)
+		)
 	)
 }
 
@@ -134,24 +137,20 @@ body {
 .step-item {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  padding: 14px;
-  margin: 10px 0;
+  gap: 10px;
+  margin: 14px 0;
 }
-.step-item p { color: var(--muted); margin: 5px 0 0; }
+
+.step-item p {
+  color: var(--muted);
+  margin: 3px 0 0;
+}
+
 .step-number {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--teal);
-  color: white;
+  flex: 0 0 24px;
+  color: var(--teal);
   font-weight: 700;
+  font-size: 15px;
 }
 
 .callout { background: #FBF7ED; border-left: 5px solid var(--gold); border-radius: 6px; padding: 14px 16px; margin: 17px 0; }
@@ -189,6 +188,33 @@ body {
 .feedback-incorrect { color: var(--danger); font-weight: 700; }
 .small-note { color: var(--muted); font-size: 13px; }
 
+.lesson-card .nav-pills {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  margin: 8px 0 20px;
+  background: #E7EFF1;
+  border-radius: 9px;
+}
+
+.lesson-card .nav-pills > li > a {
+  min-width: 90px;
+  padding: 9px 22px;
+  text-align: center;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.lesson-card .nav-pills > li.active > a,
+.lesson-card .nav-pills > li.active > a:hover,
+.lesson-card .nav-pills > li.active > a:focus {
+  background: var(--teal);
+  color: white;
+}
+
 @media(max-width: 850px) {
   .overview-grid, .terms-grid, .two-column { grid-template-columns: 1fr; }
   .copy-row { flex-direction: column; }
@@ -200,13 +226,13 @@ body {
 
 ui <- fluidPage(
 	tags$head(
-		tags$title("REDCap API Learning Lab"),
+		tags$title("REDCap, API, Automation"),
 		tags$style(HTML(css))
 	),
 	
 	tags$header(
 		class = "hero",
-		tags$h1("REDCap API Learning Lab"),
+		tags$h1("REDCap, API, Automation"),
 		tags$p("Learn how to request API access, store credentials securely, retrieve data with R or SAS, and save unchanged extracts to DataRaw.")
 	),
 	
@@ -256,7 +282,7 @@ ui <- fluidPage(
 					"Key terms",
 					tags$div(
 						class = "terms-grid",
-						term_card("API", "A structured way for one system to request data from another system."),
+						term_card("API", "Application Programming Interface. A structured way for one system to request data from another system."),
 						term_card("API token", "A unique secret used to authorize access to a particular REDCap project."),
 						term_card("Endpoint or URI", "The REDCap web address that receives the API request."),
 						term_card("Request", "The call sent to REDCap, including the token and requested export settings."),
@@ -418,7 +444,7 @@ ui <- fluidPage(
 					tags$p("After testing the API extraction manually, the same program can be scheduled to run automatically."),
 					
 					tabsetPanel(
-						type = "tabs",
+						type = "pills",
 						
 						tabPanel(
 							"R",
@@ -457,41 +483,6 @@ ui <- fluidPage(
 					tags$div(class = "callout", tags$strong("Project-relative paths: "), "Use project-relative paths so scheduled programs can reliably locate DataRaw and other project folders."),
 					tags$div(class = "callout security-callout", tags$strong("Windows password changes: "), "A password change may interrupt scheduled processing. Open the task properties and re-enter the updated password when prompted.")
 				)
-			),
-			
-			# Knowledge Check ---------------------------------------------------
-			tabPanel(
-				"Knowledge Check",
-				section_card(
-					"Check your understanding",
-					radioButtons(
-						"q1", "1. Where should the API token be stored for this training?",
-						choices = c("Inside the R or SAS program" = "a", "In a User environment variable or protected credential file" = "b", "Inside DataRaw" = "c", "In the Git repository" = "d"),
-						selected = character(0)
-					),
-					uiOutput("q1_feedback"),
-					
-					radioButtons(
-						"q2", "2. Why should credentials remain outside the code?",
-						choices = c("So the program runs faster" = "a", "So secrets are not stored in scripts or committed to Git" = "b", "Because REDCap changes the token every time the program runs" = "c", "Because environment variables are required for every API" = "d"),
-						selected = character(0)
-					),
-					uiOutput("q2_feedback"),
-					
-					radioButtons(
-						"q3", "3. What is the purpose of DataRaw?",
-						choices = c("Store unchanged source extracts" = "a", "Store project credentials" = "b", "Replace the REDCap project" = "c", "Store only final reports" = "d"),
-						selected = character(0)
-					),
-					uiOutput("q3_feedback"),
-					
-					radioButtons(
-						"q4", "4. What does git pull do in this training?",
-						choices = c("Runs the REDCap API request" = "a", "Retrieves the latest committed training materials" = "b", "Stores the API token" = "c", "Creates the DataRaw folder" = "d"),
-						selected = character(0)
-					),
-					uiOutput("q4_feedback")
-				)
 			)
 		)
 	)
@@ -500,14 +491,6 @@ ui <- fluidPage(
 # Server ------------------------------------------------------------------
 
 server <- function(input, output, session) {
-		output$q1_feedback <- renderUI(
-		choice_feedback(
-			input$q1
-			, "b"
-			, "Correct. Store the token in a User environment variable or another protected credential file.", "Not quite. The token should remain outside the project code and outside Git."))
-	output$q2_feedback <- renderUI(choice_feedback(input$q2, "b", "Correct. Credentials should not be stored in scripts or committed to Git.", "Not quite. The goal is to separate credentials from the code and repository."))
-	output$q3_feedback <- renderUI(choice_feedback(input$q3, "a", "Correct. DataRaw preserves the unchanged source extract returned through the API.", "Not quite. DataRaw is used for unchanged source data, not credentials or final outputs."))
-	output$q4_feedback <- renderUI(choice_feedback(input$q4, "b", "Correct. git pull retrieves the latest committed training materials from the remote repository.", "Not quite. git pull updates the local clone from the remote training repository."))
 }
 
 shinyApp(ui = ui, server = server)
