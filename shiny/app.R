@@ -184,9 +184,7 @@ body {
 .code-file { background: #F2F6F7; border: 1px solid var(--border); border-radius: 9px; padding: 17px; min-width: 0; }
 .code-file h3 { margin-top: 0; }
 .file-path { display: inline-block; background: #E2EEF0; color: var(--navy); border-radius: 5px; padding: 5px 8px; margin-bottom: 8px; font-family: monospace; font-weight: 600; }
-.progress-label { margin-bottom: 7px; }
-.progress-track { height: 14px; background: #E1EAEC; border-radius: 999px; overflow: hidden; margin-bottom: 20px; }
-.progress-fill { height: 100%; background: var(--teal); transition: width .2s; }
+
 .feedback-correct { color: var(--success); font-weight: 700; }
 .feedback-incorrect { color: var(--danger); font-weight: 700; }
 .small-note { color: var(--muted); font-size: 13px; }
@@ -247,8 +245,7 @@ ui <- fluidPage(
 					tags$h3("Returning later?"),
 					tags$p("Open a terminal in your existing api_docs folder and retrieve the latest committed materials:"),
 					copy_box("copy_pull", "Update command", "git pull"),
-					tags$div(class = "callout", tags$strong("Remember: "), tags$code("git clone"), " gets the repository once; ", tags$code("git pull"), " updates the copy you already have."),
-					checkboxInput("done_start", "I have cloned or pulled the training materials.", FALSE)
+					tags$div(class = "callout", tags$strong("Remember: "), tags$code("git clone"), " gets the repository once; ", tags$code("git pull"), " updates the copy you already have.")
 				)
 			),
 			
@@ -267,8 +264,7 @@ ui <- fluidPage(
 						term_card("Environment variable", "A value stored outside the program and retrieved when the program runs."),
 						term_card("DataRaw", "The protected project location for unchanged source data retrieved from REDCap."),
 						term_card("Automation", "A scheduled process that runs the extraction without requiring manual steps.")
-					),
-					checkboxInput("done_terms", "I reviewed the key terms.", FALSE)
+					)
 				)
 			),
 			
@@ -293,8 +289,7 @@ ui <- fluidPage(
 							tags$li("Do not commit the token to Git."),
 							tags$li("When the project is completely finished, the token can be deleted and generated again later if needed.")
 						)
-					),
-					checkboxInput("done_token", "I understand how to request and protect my API token.", FALSE)
+					)
 				)
 			),
 			
@@ -339,9 +334,7 @@ ui <- fluidPage(
 							tags$li(tags$strong("REDCapR package: "), tags$a("R utilities for interacting with REDCap", href = "https://github.com/OuhscBbmc/REDCapR", target = "_blank")),
 							tags$li(tags$strong("qualtRics package: "), tags$a("Introduction to qualtRics", href = "https://docs.ropensci.org/qualtRics/", target = "_blank"))
 						)
-					),
-					
-					checkboxInput("done_storage", "My REDCap URI and token are stored outside the code.", FALSE)
+					)
 				)
 			),
 			
@@ -378,8 +371,7 @@ ui <- fluidPage(
 					),
 					
 					tags$div(class = "callout success-callout", tags$strong("Expected result: "), "The toy REDCap report produces 100 records and 14 variables. The source extract is saved in DataRaw."),
-					tags$div(class = "callout", tags$strong("Preserve the raw data: "), "Do not clean, recode, deduplicate, or otherwise change the source extract while writing it to DataRaw."),
-					checkboxInput("done_call", "I successfully ran either the R or SAS example.", FALSE)
+					tags$div(class = "callout", tags$strong("Preserve the raw data: "), "Do not clean, recode, deduplicate, or otherwise change the source extract while writing it to DataRaw.")
 				)
 			),
 			
@@ -414,8 +406,7 @@ ui <- fluidPage(
 						)
 					),
 					
-					tags$div(class = "callout", "Reusable approaches reduce duplicated setup and make it easier to support multiple reports."),
-					checkboxInput("done_reuse", "I understand why the API call may be wrapped for reuse.", FALSE)
+					tags$div(class = "callout", "Reusable approaches reduce duplicated setup and make it easier to support multiple reports.")
 				)
 			),
 			
@@ -464,8 +455,7 @@ ui <- fluidPage(
 					),
 					
 					tags$div(class = "callout", tags$strong("Project-relative paths: "), "Use project-relative paths so scheduled programs can reliably locate DataRaw and other project folders."),
-					tags$div(class = "callout security-callout", tags$strong("Windows password changes: "), "A password change may interrupt scheduled processing. Open the task properties and re-enter the updated password when prompted."),
-					checkboxInput("done_automation", "I reviewed the automation workflow.", FALSE)
+					tags$div(class = "callout security-callout", tags$strong("Windows password changes: "), "A password change may interrupt scheduled processing. Open the task properties and re-enter the updated password when prompted.")
 				)
 			),
 			
@@ -500,8 +490,7 @@ ui <- fluidPage(
 						choices = c("Runs the REDCap API request" = "a", "Retrieves the latest committed training materials" = "b", "Stores the API token" = "c", "Creates the DataRaw folder" = "d"),
 						selected = character(0)
 					),
-					uiOutput("q4_feedback"),
-					checkboxInput("done_quiz", "I completed the knowledge check.", FALSE)
+					uiOutput("q4_feedback")
 				)
 			)
 		)
@@ -511,24 +500,7 @@ ui <- fluidPage(
 # Server ------------------------------------------------------------------
 
 server <- function(input, output, session) {
-	completed_sections <- reactive({
-		completion <- c(
-			isTRUE(input$done_start), isTRUE(input$done_terms), isTRUE(input$done_token),
-			isTRUE(input$done_storage), isTRUE(input$done_call), isTRUE(input$done_reuse),
-			isTRUE(input$done_automation), isTRUE(input$done_quiz)
-		)
-		sum(completion)
-	})
-	
-	output$progress_ui <- renderUI({
-		percent_complete <- completed_sections() / 8 * 100
-		tags$div(
-			tags$div(class = "progress-label", tags$strong(paste0("Progress: ", completed_sections(), " of 8 sections"))),
-			tags$div(class = "progress-track", tags$div(class = "progress-fill", style = paste0("width: ", percent_complete, "%;")))
-		)
-	})
-	
-	output$q1_feedback <- renderUI(
+		output$q1_feedback <- renderUI(
 		choice_feedback(
 			input$q1
 			, "b"
