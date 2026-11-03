@@ -56,6 +56,22 @@ copy_box <- function(id, label, value) {
 	)
 }
 
+copy_code_box <- function(id, code) {
+	tags$div(
+		class = "copy-box",
+		tags$div(
+			class = "copy-row",
+			code_box(code),
+			actionButton(
+				id,
+				"Copy code",
+				class = "copy-button",
+				`data-copy` = code
+			)
+		)
+	)
+}
+
 choice_feedback <- function(value, correct_value, correct_text, incorrect_text) {
 	if (is.null(value) || length(value) == 0) return(NULL)
 	
@@ -222,6 +238,13 @@ body {
 }
 "
 
+# script files -------------------
+r_file <- "../Code/01_get_redcap_R.R"
+sas_file <- "../Code/01_get_redcap_sas.sas"
+
+r_code <- paste(readLines(r_file, warn = FALSE), collapse = "\n")
+sas_code <- paste(readLines(sas_file, warn = FALSE), collapse = "\n")
+
 # UI ----------------------------------------------------------------------
 
 ui <- fluidPage(
@@ -320,45 +343,152 @@ ui <- fluidPage(
 			),
 			
 			# Step 2 ------------------------------------------------------------
+			
 			tabPanel(
 				"2. Store Securely",
 				section_card(
 					"Store tokens securely",
-					tags$p("The REDCap URI and API token should be stored outside the R or SAS program and outside the project directory."),
-					
-					tags$div(
-						class = "code-file",
-						tags$h3("Option 1: Windows User environment variables"),
-						tags$p("Create the REDCap URI and project-specific token under Windows User variables."),
-						tags$ul(
-							tags$li(tags$code("redcap_uri"), " → REDCap API web address"),
-							tags$li(tags$code("token_xxx"), " → project-specific REDCap token")
-						),
-						tags$img(src = "images/img_env_variables.png", class = "training-image", alt = "Windows User Environment Variables setup"),
-						tags$div(class = "callout", tags$strong("After adding or changing the variables: "), "completely close and reopen RStudio or SAS before testing them."),
-						tags$h4("Check that the token is available"),
-						tags$p("R:"), code_box('nchar(Sys.getenv("token_xxx"))'),
-						tags$p("SAS:"), code_box("%put Token length=%length(%sysget(token_xxx));")
+					tags$p(
+						paste(
+							"The REDCap URI and API token should be stored outside",
+							"the R or SAS program and outside the project directory.",
+							"Choose one of the options below."
+						)
 					),
-					
-					tags$div(style = "height: 20px;"),
-					
-					tags$div(
-						class = "code-file",
-						tags$h3("Option 2: Secure text file or .Renviron"),
-						tags$p("Store a protected .txt file in a secure location outside the project/root directory, such as C:/, and do not track it with Git."),
-						tags$h4("For R: use a user-level .Renviron file"),
-						step_item(1, "Open .Renviron", "Run this command in the R console."),
-						code_box("usethis::edit_r_environ()"),
-						step_item(2, "Add the REDCap URI and token", "Store the values in the user-level .Renviron file, not in the project directory."),
-						code_box(paste('redcap_uri="https://redcap.ucdenver.edu/api/"', 'token_xxx="YOUR_PROJECT_TOKEN"', sep = "\n")),
-						tags$div(class = "callout security-callout", tags$strong("Important: "), "Always restart R after updating .Renviron."),
-						step_item(3, "Call the stored values", "The R program retrieves the URI and token when it runs."),
-						code_box(paste("raw0 <- REDCapR::redcap_report(", '  redcap_uri = Sys.getenv("redcap_uri"),', '  token = Sys.getenv("token_xxx"),', "  ...", ")", sep = "\n")),
-						tags$h4("R helper packages for API calls"),
-						tags$ul(
-							tags$li(tags$strong("REDCapR package: "), tags$a("R utilities for interacting with REDCap", href = "https://github.com/OuhscBbmc/REDCapR", target = "_blank")),
-							tags$li(tags$strong("qualtRics package: "), tags$a("Introduction to qualtRics", href = "https://docs.ropensci.org/qualtRics/", target = "_blank"))
+					tabsetPanel(
+						type = "pills",
+						# Option 1 --------------------
+						tabPanel(
+							"Option 1: Windows User variables",
+							
+							tags$h3("Windows User environment variables"),
+							
+							tags$p(
+								paste(
+									"Create the REDCap URI and project-specific token",
+									"under Windows User variables."
+								)
+							),
+							
+							tags$ul(
+								tags$li(
+									tags$code("redcap_uri"),
+									" → REDCap API web address"
+								),
+								tags$li(
+									tags$code("token_xxx"),
+									" → project-specific REDCap token"
+								)
+							),
+							
+							tags$img(
+								src = "images/img_env_variables.png",
+								class = "training-image",
+								alt = "Windows User Environment Variables setup"
+							),
+							
+							tags$div(
+								class = "callout",
+								tags$strong("After adding or changing the variables: "),
+								"completely close and reopen RStudio or SAS before testing them."
+							),
+							
+							tags$h4("Check that the token is available"),
+							
+							tags$p("R:"),
+							code_box('nchar(Sys.getenv("token_xxx"))'),
+							
+							tags$p("SAS:"),
+							code_box(
+								"%put Token length=%length(%sysget(token_xxx));"
+							)
+						),
+						
+						# Option 2 ----------------------------------------------------
+						tabPanel(
+							"Option 2: Secure file / .Renviron",
+							
+							tags$h3("Secure text file or .Renviron"),
+							
+							tags$p(
+								paste(
+									"Store a protected .txt file in a secure location",
+									"outside the project/root directory and do not track it with Git."
+								)
+							),
+							
+							tags$h4("For R: use a user-level .Renviron file"),
+							
+							step_item(
+								1,
+								"Open .Renviron",
+								"Run this command in the R console."
+							),
+							
+							code_box(
+								"usethis::edit_r_environ()"
+							),
+							
+							step_item(
+								2,
+								"Add the REDCap URI and token",
+								paste(
+									"Store the values in the user-level .Renviron file,",
+									"not in the project directory."
+								)
+							),
+							
+							code_box(
+								paste(
+									'redcap_uri="https://redcap.ucdenver.edu/api/"',
+									'token_xxx="YOUR_PROJECT_TOKEN"',
+									sep = "\n"
+								)
+							),
+							
+							tags$div(
+								class = "callout security-callout",
+								tags$strong("Important: "),
+								"Always restart R after updating .Renviron."
+							),
+							
+							step_item(
+								3,
+								"Call the stored values",
+								"The R program retrieves the URI and token when it runs."
+							),
+							
+							code_box(
+								paste(
+									"raw0 <- REDCapR::redcap_report(",
+									'  redcap_uri = Sys.getenv("redcap_uri"),',
+									'  token = Sys.getenv("token_xxx"),',
+									"  ...",
+									")",
+									sep = "\n"
+								)
+							),
+							
+							tags$h4("R helper packages for API calls"),
+							
+							tags$ul(
+								tags$li(
+									tags$strong("REDCapR package: "),
+									tags$a(
+										"R utilities for interacting with REDCap",
+										href = "https://github.com/OuhscBbmc/REDCapR",
+										target = "_blank"
+									)
+								),
+								tags$li(
+									tags$strong("qualtRics package: "),
+									tags$a(
+										"Introduction to qualtRics",
+										href = "https://docs.ropensci.org/qualtRics/",
+										target = "_blank"
+									)
+								)
+							)
 						)
 					)
 				)
@@ -483,6 +613,77 @@ ui <- fluidPage(
 					tags$div(class = "callout", tags$strong("Project-relative paths: "), "Use project-relative paths so scheduled programs can reliably locate DataRaw and other project folders."),
 					tags$div(class = "callout security-callout", tags$strong("Windows password changes: "), "A password change may interrupt scheduled processing. Open the task properties and re-enter the updated password when prompted.")
 				)
+			),
+			## code, downloads -------------------
+			# Code & Downloads --------------------------------------------------------
+			tabPanel(
+				"Code & Downloads",
+				section_card(
+					"Code files",
+					
+					tags$p(
+						paste(
+							"Choose R or SAS below. You can copy the code directly",
+							"or download the complete file."
+						)
+					),
+					
+					tabsetPanel(
+						type = "pills",
+						
+						tabPanel(
+							"R",
+							
+							tags$h3("R example"),
+							
+							tags$p(
+								tags$code("Code/01_get_redcap_R.R")
+							),
+							
+							copy_code_box(
+								"copy_r_code",
+								r_code
+							),
+							
+							downloadButton(
+								"download_r",
+								"Download R file"
+							)
+						),
+						
+						tabPanel(
+							"SAS",
+							
+							tags$h3("SAS example"),
+							
+							tags$p(
+								tags$code("Code/01_get_redcap_sas.sas")
+							),
+							
+							copy_code_box(
+								"copy_sas_code",
+								sas_code
+							),
+							
+							downloadButton(
+								"download_sas",
+								"Download SAS file"
+							)
+						)
+					),
+					
+					tags$div(
+						class = "callout",
+						tags$strong("Prefer Git? "),
+						"Cloning the repository is optional. Git users can retrieve all training materials with:"
+					),
+					
+					copy_box(
+						"copy_clone_final",
+						"Optional Git clone",
+						paste("git clone", repo_url)
+					)
+				)
 			)
 		)
 	)
@@ -491,6 +692,22 @@ ui <- fluidPage(
 # Server ------------------------------------------------------------------
 
 server <- function(input, output, session) {
+	server <- function(input, output, session) {
+		
+		output$download_r <- downloadHandler(
+			filename = "01_get_redcap_R.R",
+			content = function(file) {
+				file.copy(r_file, file, overwrite=TRUE)
+			}
+		)
+		
+		output$download_sas <- downloadHandler(
+			filename = "01_get_redcap_sas.sas",
+			content = function(file) {
+				file.copy(sas_file, file, overwrite=TRUE)
+			}
+		)
+	}
 }
 
 shinyApp(ui = ui, server = server)
