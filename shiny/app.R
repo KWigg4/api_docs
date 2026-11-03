@@ -58,17 +58,12 @@ copy_box <- function(id, label, value) {
 
 copy_code_box <- function(id, code) {
 	tags$div(
-		class = "copy-box",
+		class = "copy-box code-download-box",
 		tags$div(
-			class = "copy-row",
-			code_box(code),
-			actionButton(
-				id,
-				"Copy code",
-				class = "copy-button",
-				`data-copy` = code
-			)
-		)
+			class = "code-toolbar",
+			actionButton(id, "Copy code", class = "copy-button", `data-copy` = code)
+		),
+		code_box(code)
 	)
 }
 
@@ -127,14 +122,7 @@ body {
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus { color: white; background: var(--teal); }
 
-.lesson-card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 18px;
-  box-shadow: 0 3px 12px rgba(11,57,84,.06);
-}
+
 .lesson-card h2 { color: var(--navy); font-size: 25px; margin: 0 0 18px; }
 .lesson-card h3 { color: var(--navy); font-size: 19px; margin-top: 18px; }
 
@@ -150,24 +138,10 @@ body {
 .term-card strong { color: var(--teal); display: block; margin-bottom: 5px; }
 .term-card p { margin: 0; }
 
-.step-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin: 14px 0;
-}
+.step-item {display: flex;align-items: flex-start;gap: 10px;margin: 14px 0;}
 
-.step-item p {
-  color: var(--muted);
-  margin: 3px 0 0;
-}
-
-.step-number {
-  flex: 0 0 24px;
-  color: var(--teal);
-  font-weight: 700;
-  font-size: 15px;
-}
+.step-item p {color: var(--muted);margin: 3px 0 0;}
+.step-number {flex: 0 0 24px;color: var(--teal);font-weight: 700;font-size: 15px;}
 
 .callout { background: #FBF7ED; border-left: 5px solid var(--gold); border-radius: 6px; padding: 14px 16px; margin: 17px 0; }
 .security-callout { background: #FBEFEF; border-left-color: var(--danger); }
@@ -192,9 +166,80 @@ body {
 }
 
 .copy-box { margin-top: 16px; }
-.copy-row { display: flex; align-items: stretch; gap: 8px; }
+
+.copy-row {display: flex;align-items: flex-start;gap: 8px;}
+
 .copy-row .code-box { flex: 1; }
-.copy-button { background: var(--teal); color: white; border: 0; border-radius: 7px; min-width: 74px; }
+
+.code-toolbar {display: flex;justify-content: flex-end;margin-bottom: 5px;}
+
+.copy-button {
+  background: var(--teal);
+  color: white;
+  border: 0;
+  border-radius: 7px;
+  min-width: 88px;
+  padding: 9px 12px;
+  white-space: nowrap;
+}
+
+.copy-button:hover,
+.copy-button:focus {
+  background: var(--navy);
+  color: white;
+}
+
+.code-download-box .code-box {
+  margin-top: 0;
+  max-height: 520px;
+  overflow: auto;
+}
+
+.download-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0 4px;
+}
+
+.download-row .shiny-download-link {
+  display: inline-block;
+  padding: 9px 13px;
+  color: var(--navy);
+  background: white;
+  border: 1px solid #AFC8CD;
+  border-radius: 7px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.download-row .shiny-download-link:hover,
+.download-row .shiny-download-link:focus {
+  color: white;
+  background: var(--teal);
+  border-color: var(--teal);
+  text-decoration: none;
+}
+
+.code-section {
+  padding: 4px 0 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.code-section:last-of-type {
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+
+.code-section h3 {
+  margin-bottom: 4px;
+}
+
+.code-description {
+  color: var(--muted);
+  margin: 6px 0 10px;
+}
 .training-image { display: block; max-width: 100%; margin: 18px auto 8px; border: 1px solid var(--border); border-radius: 9px; }
 .code-file { background: #F2F6F7; border: 1px solid var(--border); border-radius: 9px; padding: 17px; min-width: 0; }
 .code-file h3 { margin-top: 0; }
@@ -204,8 +249,11 @@ body {
 .feedback-incorrect { color: var(--danger); font-weight: 700; }
 .small-note { color: var(--muted); font-size: 13px; }
 
-.lesson-card .nav-pills {
+/* R/SAS tabs inside Code & Downloads */
+.code-tabs > .nav-pills {
   display: inline-flex;
+  width: auto;
+  flex-wrap: nowrap;
   gap: 4px;
   padding: 4px;
   margin: 8px 0 20px;
@@ -213,7 +261,12 @@ body {
   border-radius: 9px;
 }
 
-.lesson-card .nav-pills > li > a {
+.code-tabs > .nav-pills > li {
+  float: none;
+  flex: 0 0 auto;
+}
+
+.code-tabs > .nav-pills > li > a {
   min-width: 90px;
   padding: 9px 22px;
   text-align: center;
@@ -224,9 +277,9 @@ body {
   font-weight: 700;
 }
 
-.lesson-card .nav-pills > li.active > a,
-.lesson-card .nav-pills > li.active > a:hover,
-.lesson-card .nav-pills > li.active > a:focus {
+.code-tabs > .nav-pills > li.active > a,
+.code-tabs > .nav-pills > li.active > a:hover,
+.code-tabs > .nav-pills > li.active > a:focus {
   background: var(--teal);
   color: white;
 }
@@ -240,9 +293,11 @@ body {
 
 # script files -------------------
 r_file <- "../Code/01_get_redcap_R.R"
+r_auto_file <- "../Code/02_schedule.R"
 sas_file <- "../Code/01_get_redcap_sas.sas"
 
 r_code <- paste(readLines(r_file, warn = FALSE), collapse = "\n")
+r_auto_code <- paste(readLines(r_auto_file, warn = FALSE), collapse = "\n")
 sas_code <- paste(readLines(sas_file, warn = FALSE), collapse = "\n")
 
 # UI ----------------------------------------------------------------------
@@ -360,16 +415,13 @@ ui <- fluidPage(
 						# Option 1 --------------------
 						tabPanel(
 							"Option 1: Windows User variables",
-							
 							tags$h3("Windows User environment variables"),
-							
 							tags$p(
 								paste(
 									"Create the REDCap URI and project-specific token",
 									"under Windows User variables."
 								)
 							),
-							
 							tags$ul(
 								tags$li(
 									tags$code("redcap_uri"),
@@ -380,24 +432,19 @@ ui <- fluidPage(
 									" → project-specific REDCap token"
 								)
 							),
-							
 							tags$img(
 								src = "images/img_env_variables.png",
 								class = "training-image",
 								alt = "Windows User Environment Variables setup"
 							),
-							
 							tags$div(
 								class = "callout",
 								tags$strong("After adding or changing the variables: "),
 								"completely close and reopen RStudio or SAS before testing them."
 							),
-							
 							tags$h4("Check that the token is available"),
-							
 							tags$p("R:"),
 							code_box('nchar(Sys.getenv("token_xxx"))'),
-							
 							tags$p("SAS:"),
 							code_box(
 								"%put Token length=%length(%sysget(token_xxx));"
@@ -407,28 +454,20 @@ ui <- fluidPage(
 						# Option 2 ----------------------------------------------------
 						tabPanel(
 							"Option 2: Secure file / .Renviron",
-							
 							tags$h3("Secure text file or .Renviron"),
-							
 							tags$p(
 								paste(
 									"Store a protected .txt file in a secure location",
 									"outside the project/root directory and do not track it with Git."
 								)
 							),
-							
 							tags$h4("For R: use a user-level .Renviron file"),
-							
 							step_item(
 								1,
 								"Open .Renviron",
 								"Run this command in the R console."
 							),
-							
-							code_box(
-								"usethis::edit_r_environ()"
-							),
-							
+							code_box("usethis::edit_r_environ()"),
 							step_item(
 								2,
 								"Add the REDCap URI and token",
@@ -437,7 +476,6 @@ ui <- fluidPage(
 									"not in the project directory."
 								)
 							),
-							
 							code_box(
 								paste(
 									'redcap_uri="https://redcap.ucdenver.edu/api/"',
@@ -445,19 +483,16 @@ ui <- fluidPage(
 									sep = "\n"
 								)
 							),
-							
 							tags$div(
 								class = "callout security-callout",
 								tags$strong("Important: "),
 								"Always restart R after updating .Renviron."
 							),
-							
 							step_item(
-								3,
-								"Call the stored values",
-								"The R program retrieves the URI and token when it runs."
+								3
+								, "Call the stored values"
+								, "The R program retrieves the URI and token when it runs."
 							),
-							
 							code_box(
 								paste(
 									"raw0 <- REDCapR::redcap_report(",
@@ -468,9 +503,7 @@ ui <- fluidPage(
 									sep = "\n"
 								)
 							),
-							
 							tags$h4("R helper packages for API calls"),
-							
 							tags$ul(
 								tags$li(
 									tags$strong("REDCapR package: "),
@@ -485,22 +518,19 @@ ui <- fluidPage(
 									tags$a(
 										"Introduction to qualtRics",
 										href = "https://docs.ropensci.org/qualtRics/",
-										target = "_blank"
-									)
+										target = "_blank")
 								)
 							)
 						)
 					)
 				)
 			),
-			
-			# Step 3 ------------------------------------------------------------
+			# step 3 -----------------
 			tabPanel(
 				"3. Call REDCap",
 				section_card(
 					"Call REDCap",
 					tags$p("Choose the example that matches the software you use. The complete runnable programs are stored in the Code folder."),
-					
 					tags$div(
 						class = "two-column",
 						tags$div(
@@ -513,7 +543,6 @@ ui <- fluidPage(
 							tags$h4("Safe credential pattern"),
 							code_box(paste('redcap_uri <- Sys.getenv("redcap_uri")', 'token <- Sys.getenv("token_toy")', sep = "\n"))
 						),
-						
 						tags$div(
 							class = "code-file",
 							tags$h3("SAS"),
@@ -531,7 +560,7 @@ ui <- fluidPage(
 				)
 			),
 			
-			# Reuse -------------------------------------------------------------
+			# reuse ----------------------------
 			tabPanel(
 				"Reuse",
 				section_card(
@@ -561,21 +590,17 @@ ui <- fluidPage(
 							)
 						)
 					),
-					
 					tags$div(class = "callout", "Reusable approaches reduce duplicated setup and make it easier to support multiple reports.")
 				)
 			),
-			
-			# Automation --------------------------------------------------------
+			# automate --------------
 			tabPanel(
 				"Automation",
 				section_card(
 					"Automation with Windows Task Scheduler",
 					tags$p("After testing the API extraction manually, the same program can be scheduled to run automatically."),
-					
 					tabsetPanel(
 						type = "pills",
-						
 						tabPanel(
 							"R",
 							tags$h3("R automation with taskscheduleR"),
@@ -592,7 +617,6 @@ ui <- fluidPage(
 							step_item(2, "Review Windows Task Scheduler", "Open the created task and adjust its properties as needed."),
 							step_item(3, "Run the extraction", "The scheduled R program retrieves the stored credentials and writes the REDCap extract to DataRaw.")
 						),
-						
 						tabPanel(
 							"SAS",
 							tags$h3("SAS automation"),
@@ -609,75 +633,74 @@ ui <- fluidPage(
 							step_item(3, "Run the extraction", "The scheduled SAS program retrieves the stored credentials and writes the REDCap extract to DataRaw.")
 						)
 					),
-					
 					tags$div(class = "callout", tags$strong("Project-relative paths: "), "Use project-relative paths so scheduled programs can reliably locate DataRaw and other project folders."),
 					tags$div(class = "callout security-callout", tags$strong("Windows password changes: "), "A password change may interrupt scheduled processing. Open the task properties and re-enter the updated password when prompted.")
 				)
 			),
-			## code, downloads -------------------
-			# Code & Downloads --------------------------------------------------------
+			# code, downloads --------------------
 			tabPanel(
 				"Code & Downloads",
 				section_card(
 					"Code files",
-					
-					tags$p(
-						paste(
-							"Choose R or SAS below. You can copy the code directly",
-							"or download the complete file."
-						)
-					),
-					
-					tabsetPanel(
-						type = "pills",
-						
-						tabPanel(
-							"R",
-							
-							tags$h3("R example"),
-							
-							tags$p(
-								tags$code("Code/01_get_redcap_R.R")
+					tags$p("Choose R or SAS below. You can copy the code directly or download the complete files."),
+					tags$div(
+						class = "code-tabs",
+						tabsetPanel(
+							type = "pills",
+							tabPanel(
+								"R",
+							tags$div(
+								class = "code-section",
+								tags$h3("R extraction"),
+								tags$div(class = "file-path", "Code/01_get_redcap_R.R"),
+								tags$p(
+									class = "code-description",
+									"Retrieves the REDCap report and saves the unchanged extract in DataRaw."
+								),
+								copy_code_box("copy_r_code", r_code),
+								tags$div(
+									class = "download-row",
+									downloadButton("download_r", "Download R extraction file")
+								)
 							),
-							
-							copy_code_box(
-								"copy_r_code",
-								r_code
-							),
-							
-							downloadButton(
-								"download_r",
-								"Download R file"
+							tags$div(
+								class = "code-section",
+								tags$h3("R automation"),
+								tags$div(class = "file-path", "Code/02_schedule.R"),
+								tags$p(
+									class = "code-description",
+									"Creates the Windows scheduled task used to run the R extraction automatically."
+								),
+								copy_code_box("copy_r_auto_code", r_auto_code),
+								tags$div(
+									class = "download-row",
+									downloadButton("download_r_auto", "Download R automation file")
+								)
 							)
 						),
-						
 						tabPanel(
 							"SAS",
-							
-							tags$h3("SAS example"),
-							
-							tags$p(
-								tags$code("Code/01_get_redcap_sas.sas")
-							),
-							
-							copy_code_box(
-								"copy_sas_code",
-								sas_code
-							),
-							
-							downloadButton(
-								"download_sas",
-								"Download SAS file"
+							tags$div(
+								class = "code-section",
+								tags$h3("SAS extraction"),
+								tags$div(class = "file-path", "Code/01_get_redcap_sas.sas"),
+								tags$p(
+									class = "code-description",
+									"Submits the REDCap API request with PROC HTTP and saves the resulting SAS dataset."
+								),
+								copy_code_box("copy_sas_code", sas_code),
+								tags$div(
+									class = "download-row",
+									downloadButton("download_sas", "Download SAS extraction file")
+								)
 							)
 						)
-					),
-					
+					)),
 					tags$div(
 						class = "callout",
 						tags$strong("Prefer Git? "),
 						"Cloning the repository is optional. Git users can retrieve all training materials with:"
 					),
-					
 					copy_box(
 						"copy_clone_final",
 						"Optional Git clone",
@@ -689,25 +712,30 @@ ui <- fluidPage(
 	)
 )
 
-# Server ------------------------------------------------------------------
+# server ------------------------
 
 server <- function(input, output, session) {
-	server <- function(input, output, session) {
-		
-		output$download_r <- downloadHandler(
-			filename = "01_get_redcap_R.R",
-			content = function(file) {
-				file.copy(r_file, file, overwrite=TRUE)
-			}
-		)
-		
-		output$download_sas <- downloadHandler(
-			filename = "01_get_redcap_sas.sas",
-			content = function(file) {
-				file.copy(sas_file, file, overwrite=TRUE)
-			}
-		)
-	}
+	
+	output$download_r <- downloadHandler(
+		filename = "01_get_redcap_R.R",
+		content = function(file) {
+			file.copy(r_file, file, overwrite = TRUE)
+		}
+	)
+	
+	output$download_r_auto <- downloadHandler(
+		filename = function() basename(r_auto_file),
+		content = function(file) {
+			file.copy(r_auto_file, file, overwrite = TRUE)
+		}
+	)
+	
+	output$download_sas <- downloadHandler(
+		filename = "01_get_redcap_sas.sas",
+		content = function(file) {
+			file.copy(sas_file, file, overwrite = TRUE)
+		}
+	)
 }
 
 shinyApp(ui = ui, server = server)
