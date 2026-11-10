@@ -1,0 +1,75 @@
+---
+title: "Automation"
+---
+
+# Automation with Windows Task Scheduler
+
+After testing the API extraction manually, the same program can be scheduled to run automatically.
+
+::: {.panel-tabset}
+
+## R
+
+### R automation with taskscheduleR
+
+The `taskscheduleR` package can create the initial Windows scheduled task directly from R.
+
+### 1. Create the scheduled task
+
+Use `taskscheduleR::taskscheduler_create()` to schedule the R script.
+
+```r
+taskscheduleR::taskscheduler_create(
+  taskname = "REDCap_API",
+  rscript = "Code/01_get_redcap_R.R",
+  schedule = "DAILY"
+)
+```
+
+### 2. Review Windows Task Scheduler
+
+Open the created task in Windows Task Scheduler and adjust its properties as needed.
+
+### 3. Run the extraction
+
+The scheduled R program retrieves the stored credentials and writes the REDCap extract to `DataRaw`.
+
+## SAS
+
+### SAS automation
+
+A SAS program can be run in batch mode and launched by Windows Task Scheduler.
+
+### 1. Create a batch command
+
+Use the SAS executable to run the `.sas` program in batch mode.
+
+```text
+"C:\Program Files\SASHome\SASFoundation\9.4\sas.exe" ^
+  -sysin "C:\path\to\Code\01_get_redcap_sas.sas" ^
+  -log "C:\path\to\Logs\redcap_api.log"
+```
+
+The SAS executable location varies by installation. Replace the example paths with the paths on the computer running the scheduled task.
+
+### 2. Create the scheduled task
+
+Configure Windows Task Scheduler to run the batch command on the desired schedule.
+
+### 3. Run the extraction
+
+The scheduled SAS program retrieves the stored credentials and writes the REDCap extract to `DataRaw`.
+
+:::
+
+::: {.callout-note}
+## Project-relative paths
+
+Use project-relative paths so scheduled programs can reliably locate `DataRaw` and other project folders.
+:::
+
+::: {.callout-important}
+## Windows password changes
+
+A Windows password change may interrupt scheduled processing. Open the task properties and re-enter the updated password when prompted.
+:::

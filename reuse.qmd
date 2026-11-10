@@ -1,0 +1,39 @@
+---
+title: "Reuse"
+---
+
+# Reusable approaches
+
+After the basic extraction works, the same pattern can be reused across reports and projects.
+
+::: {.panel-tabset}
+
+## R
+
+### Function
+
+Store the repeated API logic in a function rather than duplicating the extraction code for each report.
+
+- Pass the report ID as an argument.
+- Pass the desired output filename or dataset name.
+- Retrieve the stored REDCap URI and token when the function runs.
+- Use project-relative output paths.
+- Preserve the unchanged source extract in `DataRaw`.
+
+## SAS
+
+### Macro and SASAUTOS
+
+Store the repeated extraction logic in a SAS macro.
+
+- Store the extraction macro in `Code/macros`.
+- Add the macro folder to `SASAUTOS`.
+- Pass the report ID and output name to the macro.
+- Reuse the same secure connection pattern.
+- Preserve the unchanged source extract in `DataRaw`.
+
+:::
+
+::: {.callout-note}
+Reusable functions and macros reduce duplicated setup and make the same extraction pattern available across multiple reports.
+:::

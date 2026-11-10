@@ -1,0 +1,73 @@
+---
+title: "3. Call REDCap"
+---
+
+# Retrieve a REDCap report
+
+The complete runnable programs are available on the **Code & Downloads** page.
+
+::: {.panel-tabset}
+
+## R
+
+### Retrieve credentials
+
+Read the REDCap URI and project token from the stored environment variables:
+
+```r
+redcap_uri <- Sys.getenv("redcap_uri")
+token <- Sys.getenv("token_toy")
+```
+
+### Request the report
+
+Use `REDCapR::redcap_report()` to retrieve the REDCap report.
+
+```r
+raw0 <- REDCapR::redcap_report(
+  redcap_uri = redcap_uri,
+  token = token,
+  report_id = REPORT_ID
+)$data
+```
+
+### Save the raw extract
+
+Write the retrieved data to a dated CSV file in `DataRaw`.
+
+The source extract should be preserved unchanged.
+
+## SAS
+
+### Retrieve credentials
+
+Read the REDCap URI and project token using `%sysget()`:
+
+```sas
+url="%sysget(redcap_uri)"
+"token=%sysget(token_toy)"
+```
+
+### Submit the API request
+
+Use `PROC HTTP` to send the request to REDCap.
+
+### Save the raw extract
+
+Import the response and save the resulting dataset in `DataRaw`.
+
+The source extract should be preserved unchanged.
+
+:::
+
+::: {.callout-tip}
+## Expected result
+
+The toy REDCap report produces **100 records and 14 variables**. The source extract is saved in `DataRaw`.
+:::
+
+::: {.callout-important}
+## Preserve the raw data
+
+Do not clean, recode, deduplicate, or otherwise change the source extract while writing it to `DataRaw`.
+:::

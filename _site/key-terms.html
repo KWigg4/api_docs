@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Key Terms – REDCap API Training</title>
+<title>Key Terms – REDCap API Guide</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -36,6 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./get-token.html" rel="next">
 <link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -104,7 +105,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Site">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">REDCap API Training</a> 
+      <a href="./">REDCap API Guide</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -126,6 +127,42 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Key Terms</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./get-token.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Get Token</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./store-securely.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Store Securely</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./call-redcap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Call REDCap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reuse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reuse</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Automation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./code-downloads.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Code &amp; Downloads</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -136,7 +173,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#key-terms" id="toc-key-terms" class="nav-link active" data-scroll-target="#key-terms">Key terms</a></li>
+  <li><a href="#how-a-redcap-api-workflow-starts" id="toc-how-a-redcap-api-workflow-starts" class="nav-link active" data-scroll-target="#how-a-redcap-api-workflow-starts">How a REDCap API workflow starts</a></li>
+  <li><a href="#key-terms" id="toc-key-terms" class="nav-link" data-scroll-target="#key-terms">Key terms</a></li>
   </ul>
 </nav>
     </div>
@@ -162,9 +200,38 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="how-a-redcap-api-workflow-starts" class="level1">
+<h1>How a REDCap API workflow starts</h1>
+<p>images/redcap_api_workflow.png{fig-alt=“REDCap API workflow showing one-time API access and token storage followed by repeated R or SAS requests to the REDCap API endpoint and responses saved to DataRaw”}</p>
+</section>
 <section id="key-terms" class="level1">
 <h1>Key terms</h1>
-<p>This page will contain the key terms used throughout the REDCap API training.</p>
+<div class="terms-grid">
+<section id="api" class="level3 term-card">
+<h3 class="anchored" data-anchor-id="api">API</h3>
+<p><strong>Application Programming Interface.</strong> A structured way for one system to request data from another system.</p>
+</section>
+<section id="api-token" class="level3 term-card">
+<h3 class="anchored" data-anchor-id="api-token">API token</h3>
+<p>A unique secret used to authorize access to a particular REDCap project.</p>
+</section>
+<section id="endpoint-uri" class="level3 term-card">
+<h3 class="anchored" data-anchor-id="endpoint-uri">Endpoint / URI</h3>
+<p>The web address that receives the API request.</p>
+</section>
+<section id="request" class="level3 term-card">
+<h3 class="anchored" data-anchor-id="request">Request</h3>
+<p>The call sent to REDCap, including the token and requested export settings.</p>
+</section>
+<section id="response" class="level3 term-card">
+<h3 class="anchored" data-anchor-id="response">Response</h3>
+<p>The data returned by REDCap after the request is processed.</p>
+</section>
+<section id="environment-variable" class="level3 term-card">
+<h3 class="anchored" data-anchor-id="environment-variable">Environment variable</h3>
+<p>A value stored outside the program and retrieved when the program runs.</p>
+</section>
+</div>
 
 
 </section>
@@ -653,6 +720,9 @@ ul.task-list li input[type="checkbox"] {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./get-token.html" class="pagination-link" aria-label="1. Get Token">
+        <span class="nav-page-text">1. Get Token</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

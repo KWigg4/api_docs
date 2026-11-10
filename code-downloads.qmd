@@ -1,0 +1,70 @@
+---
+title: "Code & Downloads"
+---
+
+# Code files
+
+Complete R and SAS programs are available below.
+
+::: {.panel-tabset}
+
+## R
+
+### R extraction
+
+`Code/01_get_redcap_R.R`
+
+Retrieves the REDCap report and saves the unchanged extract in `DataRaw`.
+
+```r
+{{< include Code/01_get_redcap_R.R >}}
+```
+
+[Download R extraction file](Code/01_get_redcap_R.R){.btn .btn-primary download="01_get_redcap_R.R"}
+
+---
+
+### R automation
+
+`Code/02_schedule.R`
+
+Creates the Windows scheduled task used to run the R extraction automatically.
+
+```r
+{{< include Code/02_schedule.R >}}
+```
+
+[Download R automation file](Code/02_schedule.R){.btn .btn-primary download="02_schedule.R"}
+
+## SAS
+
+### SAS extraction
+
+`Code/01_get_redcap_sas.sas`
+
+Submits the REDCap API request with `PROC HTTP` and saves the resulting SAS dataset.
+
+```sas
+{{< include Code/01_get_redcap_sas.sas >}}
+```
+
+Code/01_get_redcap_sas.sas{.btn .btn-primary download="01_get_redcap_sas.sas"}
+
+---
+
+---
+
+### SAS reusable macro
+
+`Code/macros/get_redcap_report.sas`
+
+Provides a reusable version of the REDCap extraction for use across reports and projects.
+
+```sas
+{{< include Code/macros/get_redcap_report.sas >}}
+```
+
+Code/macros/get_redcap_report.sas{.btn .btn-primary download="get_redcap_report.sas"}
+
+
+:::  

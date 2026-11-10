@@ -37,9 +37,11 @@ nchar(Sys.getenv("token_xxx"))
 
 ## Secure file / .Renviron
 
-Store credentials in a protected text file in a secure location outside the project directory and do not track the file with Git.
+Store credentials in a protected .txt file or .Renviron in a secure location outside the project directory and do not track the file with Git.
 
-### R: user-level .Renviron
+### R example, .Renviron  
+
+(This is my typical workflow when working with R; I stored my .Renviron file in Documents so it's always backed up on OneDrive. I sometimes also put root paths in there when automating so you only have to update one place ever, and nothing is hard coded in files along the way [you can also have R/SAS detect your root. When it comes to automations, relative roots via the `here` package can run into issues.])
 
 Open the user-level `.Renviron` file:
 

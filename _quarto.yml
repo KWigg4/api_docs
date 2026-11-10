@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "REDCap API Training"
+  title: "REDCap API Guide"
 
   sidebar:
     style: "docked"
@@ -17,6 +17,14 @@ website:
         text: "1. Get Token"
       - href: store-securely.qmd
         text: "2. Store Securely"
+      - href: call-redcap.qmd
+        text: "3. Call REDCap"
+      - href: reuse.qmd
+        text: "Reuse"
+      - href: automation.qmd
+        text: "Automation"
+      - href: code-downloads.qmd
+        text: "Code & Downloads"
 
   page-navigation: true
 

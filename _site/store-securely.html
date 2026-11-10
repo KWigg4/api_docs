@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2. Store Securely – REDCap API Training</title>
+<title>2. Store Securely – REDCap API Guide</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -71,6 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./call-redcap.html" rel="next">
 <link href="./get-token.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -139,7 +140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Site">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">REDCap API Training</a> 
+      <a href="./">REDCap API Guide</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -173,6 +174,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">2. Store Securely</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./call-redcap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Call REDCap</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reuse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reuse</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Automation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./code-downloads.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Code &amp; Downloads</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -183,15 +208,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#store-credentials-outside-the-project" id="toc-store-credentials-outside-the-project" class="nav-link active" data-scroll-target="#store-credentials-outside-the-project">Store credentials outside the project</a>
-  <ul class="collapse">
-  <li><a href="#windows-user-environment-variables" id="toc-windows-user-environment-variables" class="nav-link" data-scroll-target="#windows-user-environment-variables">Windows User environment variables</a>
-  <ul class="collapse">
-  <li><a href="#confirm-the-token-is-available" id="toc-confirm-the-token-is-available" class="nav-link" data-scroll-target="#confirm-the-token-is-available">Confirm the token is available</a></li>
-  </ul></li>
-  <li><a href="#r-user-level-.renviron" id="toc-r-user-level-.renviron" class="nav-link" data-scroll-target="#r-user-level-.renviron">R: user-level <code>.Renviron</code></a></li>
-  <li><a href="#r-packages-for-api-access" id="toc-r-packages-for-api-access" class="nav-link" data-scroll-target="#r-packages-for-api-access">R packages for API access</a></li>
-  </ul></li>
+  <li><a href="#store-credentials-securely" id="toc-store-credentials-securely" class="nav-link active" data-scroll-target="#store-credentials-securely">Store credentials securely</a></li>
   </ul>
 </nav>
     </div>
@@ -217,22 +234,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="store-credentials-outside-the-project" class="level1">
-<h1>Store credentials outside the project</h1>
+<section id="store-credentials-securely" class="level1">
+<h1>Store credentials securely</h1>
 <p>The REDCap URI and API token should be stored outside the R or SAS program and outside the project directory.</p>
-<section id="windows-user-environment-variables" class="level2">
-<h2 class="anchored" data-anchor-id="windows-user-environment-variables">Windows User environment variables</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Windows User variables</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Secure file / .Renviron</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>Create the REDCap URI and project-specific token under <strong>Windows User variables</strong>.</p>
 <ul>
 <li><code>redcap_uri</code> → REDCap API web address</li>
 <li><code>token_xxx</code> → project-specific REDCap token</li>
 </ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/img_env_variables.png" class="img-fluid figure-img"></p>
-<figcaption>Windows User Environment Variables setup</figcaption>
-</figure>
-</div>
+<p><img src="images/img_env_variables.png" class="img-fluid" alt="Windows User Environment Variables setup"></p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -243,39 +257,56 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>After adding or changing environment variables, completely close and reopen R, Positron, RStudio, or SAS before testing them.</p>
+<p>After adding or changing the variables, completely close and reopen R, Positron, RStudio, or SAS before testing them.</p>
 </div>
 </div>
-<section id="confirm-the-token-is-available" class="level3">
-<h3 class="anchored" data-anchor-id="confirm-the-token-is-available">Confirm the token is available</h3>
+<section id="check-that-the-token-is-available" class="level3">
+<h3 class="anchored" data-anchor-id="check-that-the-token-is-available">Check that the token is available</h3>
 <p><strong>R</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nchar</span>(<span class="fu">Sys.getenv</span>(<span class="st">"token_xxx"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>SAS</strong></p>
 <pre class="sas"><code>%put Token length=%length(%sysget(token_xxx));</code></pre>
 </section>
-</section>
-<section id="r-user-level-.renviron" class="level2">
-<h2 class="anchored" data-anchor-id="r-user-level-.renviron">R: user-level <code>.Renviron</code></h2>
-<p>R users can alternatively store the REDCap URI and token in the user-level <code>.Renviron</code> file.</p>
-<p>Open <code>.Renviron</code>:</p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Store credentials in a protected .txt file or .Renviron in a secure location outside the project directory and do not track the file with Git.</p>
+<section id="r-example-.renviron" class="level3">
+<h3 class="anchored" data-anchor-id="r-example-.renviron">R example, .Renviron</h3>
+<p>(This is my typical workflow when working with R; I stored my .Renviron file in Documents so it’s always backed up on OneDrive. I sometimes also put root paths in there when automating so you only have to update one place ever, and nothing is hard coded in files along the way [you can also have R/SAS detect your root. When it comes to automations, relative roots via the <code>here</code> package can run into issues.])</p>
+<p>Open the user-level <code>.Renviron</code> file:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">edit_r_environ</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Add the REDCap URI and project token:</p>
+<p>Add the REDCap URI and project-specific token:</p>
 <pre class="text"><code>redcap_uri="https://redcap.ucdenver.edu/api/"
 token_xxx="YOUR_PROJECT_TOKEN"</code></pre>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>Restart R after adding or changing values in <code>.Renviron</code>.</p>
-<p>The values can then be retrieved without placing credentials in the program:</p>
+</div>
+</div>
+<p>The program can then retrieve the stored values when it runs:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>redcap_uri <span class="ot">&lt;-</span> <span class="fu">Sys.getenv</span>(<span class="st">"redcap_uri"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>token <span class="ot">&lt;-</span> <span class="fu">Sys.getenv</span>(<span class="st">"token_xxx"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="r-packages-for-api-access" class="level2">
-<h2 class="anchored" data-anchor-id="r-packages-for-api-access">R packages for API access</h2>
+<section id="r-packages-for-api-calls" class="level3">
+<h3 class="anchored" data-anchor-id="r-packages-for-api-calls">R packages for API calls</h3>
 <ul>
 <li><strong>REDCapR:</strong> <a href="https://github.com/OuhscBbmc/REDCapR">R utilities for interacting with REDCap</a></li>
 <li><strong>qualtRics:</strong> <a href="https://docs.ropensci.org/qualtRics/">Introduction to qualtRics</a></li>
 </ul>
-
-
 </section>
+</div>
+</div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->
@@ -762,6 +793,9 @@ token_xxx="YOUR_PROJECT_TOKEN"</code></pre>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./call-redcap.html" class="pagination-link" aria-label="3. Call REDCap">
+        <span class="nav-page-text">3. Call REDCap</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
