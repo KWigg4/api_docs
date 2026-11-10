@@ -265,18 +265,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <section id="retrieve-credentials-1" class="level3">
 <h3 class="anchored" data-anchor-id="retrieve-credentials-1">Retrieve credentials</h3>
-<p>Read the REDCap URI and project token using <code>%sysget()</code>:</p>
-<pre class="sas"><code>url="%sysget(redcap_uri)"
-"token=%sysget(token_toy)"</code></pre>
+<p>The REDCap URI is retrieved from the stored env variable:</p>
+<pre class="sas"><code>/* REDCap URI */
+%let redcap_uri=%sysget(redcap_uri);
+
+/* Confirm that the token is available */
+%put Token length=%length(%sysget(token_toy));</code></pre>
+<p>The API token is retrieved with <code>%sysget(token_toy)</code> when the request body is created.</p>
+</section>
+<section id="build-the-request" class="level3">
+<h3 class="anchored" data-anchor-id="build-the-request">Build the request</h3>
+<pre class="sas"><code>data _null_;
+    file req;
+
+    put "token=%sysget(token_toy)"
+        '&amp;content=report'
+        '&amp;report_id=207931'
+        '&amp;format=csv'
+        '&amp;rawOrLabel=label';
+run;</code></pre>
 </section>
 <section id="submit-the-api-request" class="level3">
 <h3 class="anchored" data-anchor-id="submit-the-api-request">Submit the API request</h3>
-<p>Use <code>PROC HTTP</code> to send the request to REDCap.</p>
+<pre class="sas"><code>proc http
+    url="%sysget(redcap_uri)"
+    method="POST"
+    in=req
+    out=response
+    ct="application/x-www-form-urlencoded";
+run;</code></pre>
 </section>
 <section id="save-the-raw-extract-1" class="level3">
 <h3 class="anchored" data-anchor-id="save-the-raw-extract-1">Save the raw extract</h3>
-<p>Import the response and save the resulting dataset in <code>DataRaw</code>.</p>
-<p>The source extract should be preserved unchanged.</p>
+<p>The response is imported and saved unchanged in <code>DataRaw</code>.</p>
 </section>
 </div>
 </div>
@@ -292,19 +313,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <p>The toy REDCap report produces <strong>100 records and 14 variables</strong>. The source extract is saved in <code>DataRaw</code>.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Preserve the raw data
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Do not clean, recode, deduplicate, or otherwise change the source extract while writing it to <code>DataRaw</code>.</p>
 </div>
 </div>
 
