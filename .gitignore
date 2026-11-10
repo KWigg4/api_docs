@@ -8,7 +8,7 @@
 *token*
 DataRaw/*
 !DataRaw/README.md
-
+_site/
 
 /.quarto/
 **/*.quarto_ipynb
