@@ -1,0 +1,102 @@
+[
+  {
+    "objectID": "store-securely.html",
+    "href": "store-securely.html",
+    "title": "2. Store Securely",
+    "section": "",
+    "text": "Store credentials securely\nThe REDCap URI and API token should be stored outside the R or SAS program and outside the project directory.\n\nWindows User variablesSecure file / .Renviron\n\n\nCreate the REDCap URI and project-specific token under Windows User variables.\n\nredcap_uri → REDCap API web address\ntoken_xxx → project-specific REDCap token\n\n\n\n\n\n\n\n\nNote\n\n\n\nAfter adding or changing the variables, completely close and reopen R, Positron, RStudio, or SAS before testing them.\n\n\n\nCheck that the token is available\nR\nnchar(Sys.getenv(\"token_xxx\"))\nSAS\n%put Token length=%length(%sysget(token_xxx));\n\n\n\nStore credentials in a protected .txt file or .Renviron in a secure location outside the project directory and do not track the file with Git.\n\nR example, .Renviron\n(This is my typical workflow when working with R; I stored my .Renviron file in Documents so it’s always backed up on OneDrive. I sometimes also put root paths in there when automating so you only have to update one place ever, and nothing is hard coded in files along the way [you can also have R/SAS detect your root. When it comes to automations, relative roots via the here package can run into issues.])\nOpen the user-level .Renviron file:\nusethis::edit_r_environ()\nAdd the REDCap URI and project-specific token:\nredcap_uri=\"https://redcap.ucdenver.edu/api/\"\ntoken_xxx=\"YOUR_PROJECT_TOKEN\"\n\n\n\n\n\n\nImportant\n\n\n\nRestart R after adding or changing values in .Renviron.\n\n\nThe program can then retrieve the stored values when it runs:\nredcap_uri &lt;- Sys.getenv(\"redcap_uri\")\ntoken &lt;- Sys.getenv(\"token_xxx\")\n\n\nR packages for API calls\n\nREDCapR: R utilities for interacting with REDCap\nqualtRics: Introduction to qualtRics",
+    "crumbs": [
+      "2. Store Securely"
+    ]
+  },
+  {
+    "objectID": "key-terms.html",
+    "href": "key-terms.html",
+    "title": "Key Terms",
+    "section": "",
+    "text": "How a REDCap API workflow starts\n\n\n\nREDCap API workflow showing one-time API access and token storage followed by repeated R or SAS requests and responses\n\n\n\n\nKey terms\n\n\nAPI\nApplication Programming Interface. A structured way for one system to request data from another system.\n\n\nAPI token\nA unique secret used to authorize access to a particular REDCap project.\n\n\nEndpoint / URI\nThe web address that receives the API request.\n\n\nRequest\nThe call sent to REDCap, including the token and requested export settings.\n\n\nResponse\nThe data returned by REDCap after the request is processed.\n\n\nEnvironment variable\nA value stored outside the program and retrieved when the program runs.",
+    "crumbs": [
+      "Key Terms"
+    ]
+  },
+  {
+    "objectID": "get-token.html",
+    "href": "get-token.html",
+    "title": "1. Get Token",
+    "section": "",
+    "text": "In the appropriate REDCap project, select API from the Applications section of the left sidebar.\n\n\n\nSelect Obtain API token for the project.\nIf you don’t see API on the left, you just need to obtain the appropriate permission from the owner or add the permission yourself if you can.\n\n\n\nREDCap API token request screen\n\n\nOnce requested, it may take a few hours to appear. Once it does, your token will look like this:\n\n\n\nAPI token\n\n\n\n\n\n\n\n\nImportantToken handling\n\n\n\n\nDo not share the token with other people.\nDo not include the token in screenshots.\nDo not place the token in R or SAS code.\nDo not commit the token to Git.\nWhen the project is complete, the token should be deleted; it can generated again later if needed.\nIf you ever suspect your token has been exposed, delete it and generate a new one. All you have to do is update the token value whereever you stored it, and your code will continue to function.",
+    "crumbs": [
+      "1. Get Token"
+    ]
+  },
+  {
+    "objectID": "get-token.html#open-api-and-api-playground",
+    "href": "get-token.html#open-api-and-api-playground",
+    "title": "1. Get Token",
+    "section": "",
+    "text": "In the appropriate REDCap project, select API from the Applications section of the left sidebar.",
+    "crumbs": [
+      "1. Get Token"
+    ]
+  },
+  {
+    "objectID": "get-token.html#obtain-the-project-token",
+    "href": "get-token.html#obtain-the-project-token",
+    "title": "1. Get Token",
+    "section": "",
+    "text": "Select Obtain API token for the project.\nIf you don’t see API on the left, you just need to obtain the appropriate permission from the owner or add the permission yourself if you can.\n\n\n\nREDCap API token request screen\n\n\nOnce requested, it may take a few hours to appear. Once it does, your token will look like this:\n\n\n\nAPI token\n\n\n\n\n\n\n\n\nImportantToken handling\n\n\n\n\nDo not share the token with other people.\nDo not include the token in screenshots.\nDo not place the token in R or SAS code.\nDo not commit the token to Git.\nWhen the project is complete, the token should be deleted; it can generated again later if needed.\nIf you ever suspect your token has been exposed, delete it and generate a new one. All you have to do is update the token value whereever you stored it, and your code will continue to function.",
+    "crumbs": [
+      "1. Get Token"
+    ]
+  },
+  {
+    "objectID": "call-redcap.html",
+    "href": "call-redcap.html",
+    "title": "3. Call REDCap",
+    "section": "",
+    "text": "Retrieve a REDCap report\nThe complete runnable programs are available on the Code & Downloads page.\n\nRSAS\n\n\n\nRetrieve credentials\nRead the REDCap URI and project token from the stored environment variables:\nredcap_uri &lt;- Sys.getenv(\"redcap_uri\")\ntoken &lt;- Sys.getenv(\"token_toy\")\n\n\nRequest the report\nUse REDCapR::redcap_report() to retrieve the REDCap report.\nraw0 &lt;- REDCapR::redcap_report(\n  redcap_uri = redcap_uri,\n  token = token,\n  report_id = REPORT_ID\n)$data\n\n\nSave the raw extract\nWrite the retrieved data to a dated CSV file in DataRaw.\nThe source extract should be preserved unchanged.\n\n\n\n\nRetrieve credentials\nRead the REDCap URI and project token using %sysget():\nurl=\"%sysget(redcap_uri)\"\n\"token=%sysget(token_toy)\"\n\n\nSubmit the API request\nUse PROC HTTP to send the request to REDCap.\n\n\nSave the raw extract\nImport the response and save the resulting dataset in DataRaw.\nThe source extract should be preserved unchanged.\n\n\n\n\n\n\n\n\n\n\nTipExpected result\n\n\n\nThe toy REDCap report produces 100 records and 14 variables. The source extract is saved in DataRaw.\n\n\n\n\n\n\n\n\nImportantPreserve the raw data\n\n\n\nDo not clean, recode, deduplicate, or otherwise change the source extract while writing it to DataRaw.",
+    "crumbs": [
+      "3. Call REDCap"
+    ]
+  },
+  {
+    "objectID": "automation.html",
+    "href": "automation.html",
+    "title": "Automation",
+    "section": "",
+    "text": "Automation with Windows Task Scheduler\nAfter testing the API extraction manually, the same program can be scheduled to run automatically.\n\nRSAS\n\n\n\nR automation with taskscheduleR\nThe taskscheduleR package can create the initial Windows scheduled task directly from R.\n\n\n1. Create the scheduled task\nUse taskscheduleR::taskscheduler_create() to schedule the R script.\ntaskscheduleR::taskscheduler_create(\n    taskname = \"REDCap_API_test\"\n    , rscript = \"Code/01_get_redcap_R.R\"\n    , schedule = \"DAILY\"\n    , starttime = \"09:10\"\n    , startdate = format(Sys.Date()+1, \"%d/%m/%Y\")\n    )\n\n\n2. Review Windows Task Scheduler\nOpen the created task in Windows Task Scheduler and adjust its properties as needed.\nI usually do at least the following:\n1. In Windows Task Scheduler, in the top left make sure you’re in the folder Task Scheduler Library\n2. Find your task based on what you named it. In this instance, it’d be REDCAP_API_test. Double click on the name (or use Properties on the right) 3. I update the following: a. General: Run whether user is logged on or not b. Conditions &gt; Power: Uncheck “Start the task only if the computer is on AC power” c. (OPTIONAL) You can also go into Actions and select where the program starts from, might be helpful in instances with relative paths in the code (and the R package taskscheduleR doesn’t play nicely with the here::here() package either).\nIt might seem like a pain to still have to go into Task Scheduler after using taskscheduleR, so why not just do it in Windows from the start? Just personal preference, nothing more. I like to have as much traceable code as possible, but there are many other ways to do it!\n\n\n3. Run the extraction\nThe scheduled R program retrieves the stored credentials and writes the REDCap extract to DataRaw.\n\n\n\n\nSAS automation\nA SAS program can be run in batch mode and launched by Windows Task Scheduler.\n\n\n1. Create a batch command\nUse the SAS executable to run the .sas program in batch mode.\n\"C:\\Program Files\\SASHome\\SASFoundation\\9.4\\sas.exe\" ^\n  -sysin \"C:\\path\\to\\Code\\01_get_redcap_sas.sas\" ^\n  -log \"C:\\path\\to\\Logs\\redcap_api.log\"\nThe SAS executable location varies by installation. Replace the example paths with the paths on the computer running the scheduled task.\n\n\n2. Create the scheduled task\nConfigure Windows Task Scheduler to run the batch command on the desired schedule. See the R section above for how I typically update the task’s properties.\n\n\n3. Run the extraction\nThe scheduled SAS program retrieves the stored credentials and writes the REDCap extract to DataRaw.\n\n\n\n\n\n\n\n\n\n\nNoteProject-relative paths\n\n\n\nUse project-relative paths so scheduled programs can reliably locate DataRaw and other project folders.\n\n\n\n\n\n\n\n\nImportantWindows password changes\n\n\n\nA Windows password change may interrupt scheduled processing. Open the task properties and re-enter the updated password when prompted.",
+    "crumbs": [
+      "Automation"
+    ]
+  },
+  {
+    "objectID": "code-downloads.html",
+    "href": "code-downloads.html",
+    "title": "Code & Downloads",
+    "section": "",
+    "text": "Code files\nComplete R and SAS programs are available below.\n\nRSAS\n\n\n\nR extraction\nCode/01_get_redcap_R.R\nRetrieves the REDCap report and saves the unchanged extract in DataRaw.\n\ntoday &lt;- lubridate::today()\n\n# Export a report you created in REDCap\ndemo_raw &lt;- REDCapR::redcap_report(\n    redcap_uri = Sys.getenv(\"redcap_uri\"),\n    token      = Sys.getenv(\"token_toy\"),\n    report_id  = 207931, # if you're using a report\n    raw_or_label = \"label\" # or raw\n)$data \n# 11/02: nrow 100, ncol=14\n\n# Saved as an RDS and a timestamped .csv: \nsaveRDS(demo_raw, here::here(\"DataRaw/demo_raw_R.RDS\"))\nwrite.csv(\n    demo_raw,\n    here::here(paste0(\"DataRaw/demo_\",today,\".csv\")),\n    row.names = FALSE,\n    na=\"\"\n)\n\n# You can also just download an entire db or project. See the website for this package for more options! \n\n# get metadata for this specific report from REDCap (with some example filteres)\nmeta &lt;- REDCapR::redcap_metadata_read(\n    redcap_uri = Sys.getenv(\"redcap_uri\"),\n    token      = Sys.getenv(\"token_toy\")\n)$data |&gt; \n    dplyr::filter(form_name == \"demo\") |&gt; \n    dplyr::filter(!field_type==\"descriptive\") |&gt; \n    dplyr::select(\n        field_name, field_type, field_label\n        , dplyr::starts_with(c(\"select\",\"text_validation_type\"))) \n\nwrite.csv(\n    meta,\n    here::here(paste0(\"DataRaw/demo_\",today,\".csv\")),\n    row.names = FALSE,\n    na=\"\"\n)\nDownload R extraction file\n\n\n\nR automation\nCode/02_schedule.R\nCreates the Windows scheduled task used to run the R extraction automatically.\ntaskscheduleR::taskscheduler_create(\n    taskname = \"REDCap_API_test\"\n    , rscript = \"Code/01_get_redcap_R.R\"\n    , schedule = \"DAILY\"\n    , starttime = \"09:10\"\n    , startdate = format(Sys.Date()+1, \"%d/%m/%Y\")\n    )\nDownload R automation file\n\n\n\n\nSAS extraction\nCode/01_get_redcap_sas.sas\nSubmits the REDCap API request with PROC HTTP and saves the resulting SAS dataset.\n/**************************************************************************\n* REDCap API Workflow in SAS\n*\n* Demonstrates:\n*   1. Direct REDCap API extraction\n*   2. Reusable extraction using a SAS macro\n\n* DEPS: This depends on having redcap_uri and token_toy both as EnvVars\n**************************************************************************/\n\n/* Confirm that the API token is available (without directly printing it)\n    - EXPECT: length = 32  */\n%put Token length=%length(%sysget(token_toy));\n\n\n/**************************************************************************\n* VERSION 1: DIRECT API EXTRACTION\n**************************************************************************/\n\n/* Temp files for the API request and response */\nFILENAME req temp;\nFILENAME response temp;\n\n\n/* Build the REDCap API request */\ndata _null_;\n    file req;\n    put \"token=%sysget(token_toy)\"\n        '&content=report'\n        '&report_id=207931'\n        '&format=csv'\n        '&rawOrLabel=label';\nrun;\n\n/* submit the request to REDCap */\nPROC HTTP\n    URL=\"%sysget(redcap_uri)\"\n    METHOD=\"POST\"\n    IN=req\n    OUT=response\n    CT=\"application/x-www-form-urlencoded\";\nRUN;\n\n\n/* determine project root */\n%let root=%sysfunc(\n    prxchange(s/\\\\Code\\\\.*$//i, 1, %sysget(SAS_EXECFILEPATH))\n);\n\n%PUT ROOT=&root;\n\n/* assign DataRaw libname */\nLIBNAME DataRaw \"&root.\\DataRaw\";\n\n\n/* Import the REDCap response */\nPROC IMPORT\n    DATAFILE=response\n    OUT=DataRaw.demo_raw\n    dbms=csv\n    replace;\n    GETNAMES=yes;\n    GUESSINGROWS=max;\nRUN;\n\n\n/* review the imported dataset */\nPROC CONTENTS DATA=DataRaw.demo_raw;\nRUN;\n\n\n/* clean up; rm tmp file references */\nFILENAME req clear;\nFILENAME response clear;\n\n\n/**************************************************************************\n* VERSION 2: REUSABLE MACRO\n*\n* Macro script: Code/macros/get_redcap_report.sas\n**************************************************************************/\n\n/* tell SAS where to find autocall macros */\nOPTIONS SASAUTOS=(sasautos \"&root.\\Code\\macros\");\n\n/* Run the extraction macro */\n%get_redcap_report(\n    report_id=207931,\n    out=demo\n);\n\n/* Review output */\nPROC CONTENTS DATA=DataRaw.demo; RUN;\n\nCode/01_get_redcap_sas.sas{.btn .btn-primary download=“01_get_redcap_sas.sas”}\n\n\n\n\nSAS reusable macro\nCode/macros/get_redcap_report.sas\nProvides a reusable version of the REDCap extraction for use across reports and projects.\n%macro get_redcap_report(report_id=, out=);\n\n    /* Validate required parameters */\n    %if %superq(report_id)= %then %do;\n        %put ERROR: The REPORT_ID parameter is required.;\n        %return;\n    %end;\n\n    %if %superq(out)= %then %do;\n        %put ERROR: The OUT parameter is required.;\n        %return;\n    %end;\n\n    /* Temporary files for the REDCap API request and response */\n    filename req temp;\n    filename response temp;\n\n    /* Build the REDCap API request */\n    data _null_;\n        file req;\n\n        put \"token=%sysget(token_toy)\"\n            '&content=report'\n            '&report_id=' \"&report_id\"\n            '&format=csv'\n            '&rawOrLabel=label';\n    run;\n\n    /* Submit the API request */\n    proc http\n        url=\"%sysget(redcap_uri)\"\n        method=\"POST\"\n        in=req\n        out=response\n        ct=\"application/x-www-form-urlencoded\";\n    run;\n\n    /* Report the HTTP result */\n    %put HTTP status code: &SYS_PROCHTTP_STATUS_CODE;\n    %put HTTP status phrase: &SYS_PROCHTTP_STATUS_PHRASE;\n\n    /* Stop if REDCap did not return a successful response */\n    %if &SYS_PROCHTTP_STATUS_CODE ne 200 %then %do;\n\n        %put ERROR: REDCap request failed. Import was not attempted.;\n\n        /* Print the REDCap response to the SAS log */\n        data _null_;\n            infile response;\n            input;\n            put _infile_;\n        run;\n\n        filename req clear;\n        filename response clear;\n\n        %return;\n    %end;\n\n    /* Import the unchanged REDCap response */\n    proc import\n        datafile=response\n        out=DataRaw.&out\n        dbms=csv\n        replace;\n        getnames=yes;\n        guessingrows=max;\n    run;\n\n    /* Clear temporary file references */\n    filename req clear;\n    filename response clear;\n\n%mend get_redcap_report;\n\nCode/macros/get_redcap_report.sas{.btn .btn-primary download=“get_redcap_report.sas”}",
+    "crumbs": [
+      "Code & Downloads"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Start Here",
+    "section": "",
+    "text": "Overview\nThis overview follows the complete workflow from REDCap API access through secure data extraction and storage.\n\n\n1. Enable API access\nRequest a project-specific REDCap API token.\n\n\n2. Store the token securely\nKeep credentials outside the code and project directory.\n\n\n3. Call REDCap\nUse the R or SAS example to retrieve the report.\n\n\n4. Reuse and automate\nSave unchanged extracts to DataRaw and support repeatable runs.\n\n\n\n\n\n\n\n\nNoteDesign principle\n\n\n\nCredentials stay separate from the code and extracted data.\n\n\n\n\nTraining files\nComplete R and SAS programs are available on the Code & Downloads page. Code can be copied directly from the site or downloaded as the original .R and .sas files.\n\nR extraction: Code/01_get_redcap_R.R\nR automation: Code/02_schedule.R\nSAS extraction: Code/01_get_redcap_sas.sas",
+    "crumbs": [
+      "Start Here"
+    ]
+  },
+  {
+    "objectID": "reuse.html",
+    "href": "reuse.html",
+    "title": "Reuse",
+    "section": "",
+    "text": "Reusable approaches\nAfter the basic extraction works, the same pattern can be reused across reports and projects.\n\nRSAS\n\n\n\nFunction\nStore the repeated API logic in a function rather than duplicating the extraction code for each report.\n\nPass the report ID as an argument.\nPass the desired output filename or dataset name.\nRetrieve the stored REDCap URI and token when the function runs.\nUse project-relative output paths.\nPreserve the unchanged source extract in DataRaw.\n\n\n\n\n\nMacro and SASAUTOS\nStore the repeated extraction logic in a SAS macro.\n\nStore the extraction macro in Code/macros.\nAdd the macro folder to SASAUTOS.\nPass the report ID and output name to the macro.\nReuse the same secure connection pattern.\nPreserve the unchanged source extract in DataRaw.\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nReusable functions and macros reduce duplicated setup and make the same extraction pattern available across multiple reports.",
+    "crumbs": [
+      "Reuse"
+    ]
+  }
+]
