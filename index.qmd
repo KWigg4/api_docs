@@ -1,0 +1,52 @@
+---
+title: "Start Here"
+---
+
+# Overview
+
+This learning lab follows the complete workflow from REDCap API access through secure data extraction.
+
+::: {.overview-grid}
+
+::: {.overview-card}
+### 1. Enable API access
+
+Request a project-specific REDCap API token.
+:::
+
+::: {.overview-card}
+### 2. Store the token securely
+
+Keep credentials outside the code and project directory.
+:::
+
+::: {.overview-card}
+### 3. Call REDCap
+
+Use the R or SAS example to retrieve the report.
+:::
+
+::: {.overview-card}
+### 4. Reuse and automate
+
+Save unchanged extracts to `DataRaw` and support repeatable runs.
+:::
+
+:::
+
+::: {.callout-note}
+## Design principle
+
+Credentials stay separate from the code and extracted data.
+:::
+
+# How to use this training
+
+Work through the training sections in order.
+
+When you reach the extraction examples, choose the path that matches the software you use:
+
+- **R:** `Code/01_get_redcap_R.R`
+- **SAS:** `Code/01_get_redcap_sas.sas`
+
+Complete example programs are available on the **Code & Downloads** page. You will be able to view and copy the code directly from the website or download the original files.

@@ -9,3 +9,6 @@
 DataRaw/*
 !DataRaw/README.md
 
+
+/.quarto/
+**/*.quarto_ipynb
