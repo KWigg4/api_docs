@@ -261,7 +261,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Open the created task in Windows Task Scheduler and adjust its properties as needed.</p>
 <p>I usually do at least the following:<br>
 1. In Windows Task Scheduler, in the top left make sure you’re in the folder <code>Task Scheduler Library</code><br>
-2. Find your task based on what you named it. In this instance, it’d be <code>REDCAP_API_test</code>. Double click on the name (or use <code>Properties</code> on the right) 3. I update the following: a. General: Run whether user is logged on or not b. Conditions &gt; Power: Uncheck “Start the task only if the computer is on AC power” c.&nbsp;(OPTIONAL) You can also go into <code>Actions</code> and select where the program starts from, might be helpful in instances with relative paths in the code (and the R package <code>taskscheduleR</code> doesn’t play nicely with the <code>here::here()</code> package either).</p>
+2. Find your task based on what you named it. In this instance, it’d be <code>REDCAP_API_test</code>. Double click on the name (or use <code>Properties</code> on the right)<br>
+3. I update the following:<br>
+a. General: Run whether user is logged on or not<br>
+b. Conditions &gt; Power: Uncheck “Start the task only if the computer is on AC power”<br>
+c.&nbsp;(OPTIONAL) You can also go into <code>Actions</code> and select where the program starts from, might be helpful in instances with relative paths in the code (and the R package <code>taskscheduleR</code> doesn’t play nicely with the <code>here::here()</code> package either).</p>
 <p>It might seem like a pain to still have to go into Task Scheduler after using <code>taskscheduleR</code>, so why not just do it in Windows from the start? Just personal preference, nothing more. I like to have as much traceable code as possible, but there are many other ways to do it!</p>
 </section>
 <section id="run-the-extraction" class="level3">
@@ -397,7 +401,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/KWigg4\.github\.io\/api_docs\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
