@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Start Here",
     "section": "",
-    "text": "Overview\nThis learning lab follows the complete workflow from REDCap API access through secure data extraction.\n\n\n1. Enable API access\nRequest a project-specific REDCap API token.\n\n\n2. Store the token securely\nKeep credentials outside the code and project directory.\n\n\n3. Call REDCap\nUse the R or SAS example to retrieve the report.\n\n\n4. Reuse and automate\nSave unchanged extracts to DataRaw and support repeatable runs.\n\n\n\n\n\n\n\n\nNoteDesign principle\n\n\n\nCredentials stay separate from the code and extracted data.\n\n\n\n\nHow to use this training\nWork through the training sections in order.\nWhen you reach the extraction examples, choose the path that matches the software you use:\n\nR: Code/01_get_redcap_R.R\nSAS: Code/01_get_redcap_sas.sas\n\nComplete example programs are available on the Code & Downloads page. You will be able to view and copy the code directly from the website or download the original files.",
+    "text": "Overview\nThis learning lab follows the complete workflow from REDCap API access through secure data extraction.\n\n\n1. Enable API access\nRequest a project-specific REDCap API token.\n\n\n2. Store the token securely\nKeep credentials outside the code and project directory.\n\n\n3. Call REDCap\nUse the R or SAS example to retrieve the report.\n\n\n4. Reuse and automate\nSave unchanged extracts to DataRaw and support repeatable runs.\n\n\n\n\n\n\n\n\nNoteDesign principle\n\n\n\nCredentials stay separate from the code and extracted data.\n\n\n\n\nTraining files\nComplete R and SAS programs are available on the Code & Downloads page. Code can be copied directly from the site or downloaded as the original .R and .sas files.\n\nR extraction: Code/01_get_redcap_R.R\nR automation: Code/02_schedule.R\nSAS extraction: Code/01_get_redcap_sas.sas",
     "crumbs": [
       "Start Here"
     ]
@@ -17,6 +17,86 @@
     "text": "Key terms\nThis page will contain the key terms used throughout the REDCap API training.",
     "crumbs": [
       "Key Terms"
+    ]
+  },
+  {
+    "objectID": "get-token.html",
+    "href": "get-token.html",
+    "title": "1. Get Token",
+    "section": "",
+    "text": "In the appropriate REDCap project, select API from the Applications section of the left sidebar.\n\n\n\nSelect Obtain API token for the project.\nimages/img_api_request_token.png{fig-alt=“REDCap API token request screen”}\n\n\n\n\n\n\nImportantToken handling\n\n\n\n\nDo not share the token with other people.\nDo not include the token in screenshots.\nDo not place the token in R or SAS code.\nDo not commit the token to Git.\nWhen the project is complete, the token can be deleted and generated again later if needed.",
+    "crumbs": [
+      "1. Get Token"
+    ]
+  },
+  {
+    "objectID": "get-token.html#open-api-and-api-playground",
+    "href": "get-token.html#open-api-and-api-playground",
+    "title": "1. Get Token",
+    "section": "",
+    "text": "In the appropriate REDCap project, select API from the Applications section of the left sidebar.",
+    "crumbs": [
+      "1. Get Token"
+    ]
+  },
+  {
+    "objectID": "get-token.html#obtain-the-project-token",
+    "href": "get-token.html#obtain-the-project-token",
+    "title": "1. Get Token",
+    "section": "",
+    "text": "Select Obtain API token for the project.\nimages/img_api_request_token.png{fig-alt=“REDCap API token request screen”}\n\n\n\n\n\n\nImportantToken handling\n\n\n\n\nDo not share the token with other people.\nDo not include the token in screenshots.\nDo not place the token in R or SAS code.\nDo not commit the token to Git.\nWhen the project is complete, the token can be deleted and generated again later if needed.",
+    "crumbs": [
+      "1. Get Token"
+    ]
+  },
+  {
+    "objectID": "get-token.html#store-the-token-securely",
+    "href": "get-token.html#store-the-token-securely",
+    "title": "1. Get Token",
+    "section": "",
+    "text": "Do not paste the token into the training code.\n\n\n\n\n\n\nImportantToken handling\n\n\n\n\nDo not share the token with other people.\nDo not include the token in screenshots.\nDo not place the token in R or SAS code.\nDo not commit the token to Git.\nWhen the project is complete, the token can be deleted and generated again later if needed.",
+    "crumbs": [
+      "1. Get Token"
+    ]
+  },
+  {
+    "objectID": "store-securely.html",
+    "href": "store-securely.html",
+    "title": "2. Store Securely",
+    "section": "",
+    "text": "The REDCap URI and API token should be stored outside the R or SAS program and outside the project directory.\n\n\nCreate the REDCap URI and project-specific token under Windows User variables.\n\nredcap_uri → REDCap API web address\ntoken_xxx → project-specific REDCap token\n\n\n\n\nWindows User Environment Variables setup\n\n\n\n\n\n\n\n\nNote\n\n\n\nAfter adding or changing environment variables, completely close and reopen R, Positron, RStudio, or SAS before testing them.\n\n\n\n\nR\nnchar(Sys.getenv(\"token_xxx\"))\nSAS\n%put Token length=%length(%sysget(token_xxx));\n\n\n\n\nR users can alternatively store the REDCap URI and token in the user-level .Renviron file.\nOpen .Renviron:\nusethis::edit_r_environ()\nAdd the REDCap URI and project token:\nredcap_uri=\"https://redcap.ucdenver.edu/api/\"\ntoken_xxx=\"YOUR_PROJECT_TOKEN\"\nRestart R after adding or changing values in .Renviron.\nThe values can then be retrieved without placing credentials in the program:\nredcap_uri &lt;- Sys.getenv(\"redcap_uri\")\ntoken &lt;- Sys.getenv(\"token_xxx\")\n\n\n\n\nREDCapR: R utilities for interacting with REDCap\nqualtRics: Introduction to qualtRics",
+    "crumbs": [
+      "2. Store Securely"
+    ]
+  },
+  {
+    "objectID": "store-securely.html#windows-user-environment-variables",
+    "href": "store-securely.html#windows-user-environment-variables",
+    "title": "2. Store Securely",
+    "section": "",
+    "text": "Create the REDCap URI and project-specific token under Windows User variables.\n\nredcap_uri → REDCap API web address\ntoken_xxx → project-specific REDCap token\n\n\n\n\nWindows User Environment Variables setup\n\n\n\n\n\n\n\n\nNote\n\n\n\nAfter adding or changing environment variables, completely close and reopen R, Positron, RStudio, or SAS before testing them.\n\n\n\n\nR\nnchar(Sys.getenv(\"token_xxx\"))\nSAS\n%put Token length=%length(%sysget(token_xxx));",
+    "crumbs": [
+      "2. Store Securely"
+    ]
+  },
+  {
+    "objectID": "store-securely.html#r-user-level-.renviron",
+    "href": "store-securely.html#r-user-level-.renviron",
+    "title": "2. Store Securely",
+    "section": "",
+    "text": "R users can alternatively store the REDCap URI and token in the user-level .Renviron file.\nOpen .Renviron:\nusethis::edit_r_environ()\nAdd the REDCap URI and project token:\nredcap_uri=\"https://redcap.ucdenver.edu/api/\"\ntoken_xxx=\"YOUR_PROJECT_TOKEN\"\nRestart R after adding or changing values in .Renviron.\nThe values can then be retrieved without placing credentials in the program:\nredcap_uri &lt;- Sys.getenv(\"redcap_uri\")\ntoken &lt;- Sys.getenv(\"token_xxx\")",
+    "crumbs": [
+      "2. Store Securely"
+    ]
+  },
+  {
+    "objectID": "store-securely.html#r-packages-for-api-access",
+    "href": "store-securely.html#r-packages-for-api-access",
+    "title": "2. Store Securely",
+    "section": "",
+    "text": "REDCapR: R utilities for interacting with REDCap\nqualtRics: Introduction to qualtRics",
+    "crumbs": [
+      "2. Store Securely"
     ]
   }
 ]

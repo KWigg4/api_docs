@@ -13,6 +13,10 @@ website:
         text: "Start Here"
       - href: key-terms.qmd
         text: "Key Terms"
+      - href: get-token.qmd
+        text: "1. Get Token"
+      - href: store-securely.qmd
+        text: "2. Store Securely"
 
   page-navigation: true
 
