@@ -11,7 +11,7 @@ demo_raw <- REDCapR::redcap_report(
 # 11/02: nrow 100, ncol=14
 
 # Saved as an RDS and a timestamped .csv: 
-saveRDS(demo_raw, here::here("DataRaw/demo_raw_.RDS"))
+saveRDS(demo_raw, here::here("DataRaw/demo_raw_R.RDS"))
 write.csv(
 	demo_raw,
 	here::here(paste0("DataRaw/demo_",today,".csv")),

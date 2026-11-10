@@ -4,7 +4,7 @@ title: "Start Here"
 
 # Overview
 
-This learning lab follows the complete workflow from REDCap API access through secure data extraction.
+This overview follows the complete workflow from REDCap API access through secure data extraction and storage.
 
 ::: {.overview-grid}
 

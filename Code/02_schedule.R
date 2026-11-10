@@ -1,5 +1,5 @@
 taskscheduleR::taskscheduler_create(
-	taskname = "REDCap_API"
+	taskname = "REDCap_API_test"
 	, rscript = "Code/01_get_redcap_R.R"
 	, schedule = "DAILY"
 	, starttime = "09:10"
