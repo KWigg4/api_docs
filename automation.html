@@ -260,16 +260,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="review-windows-task-scheduler">2. Review Windows Task Scheduler</h3>
 <p>Open the created task in Windows Task Scheduler and adjust its properties as needed.</p>
 <p>I usually do at least the following:</p>
-<ol type="1">
-<li><p>In Windows Task Scheduler, in the top left make sure you’re in the folder <code>Task Scheduler Library</code></p></li>
-<li><p>Find your task based on what you named it. In this instance, it’d be <code>REDCAP_API_test</code>. Double click on the name (or use <code>Properties</code> on the right)</p></li>
-<li><p>I update the following:</p>
-<ol type="a">
-<li><p>General: Run whether user is logged on or not</p></li>
-<li><p>Conditions &gt; Power: Uncheck “Start the task only if the computer is on AC power”</p></li>
-<li><p>(OPTIONAL) You can also go into <code>Actions</code> and select where the program starts from, might be helpful in instances with relative paths in the code (and the R package <code>taskscheduleR</code> doesn’t play nicely with the <code>here::here()</code> package either).</p></li>
-</ol></li>
-</ol>
+<pre><code>1. In Windows Task Scheduler, in the top left make sure you're in the folder `Task Scheduler Library`.
+2. Find your task based on what you named it. In this instance, it'd be `REDCAP_API_test`.
+3. Double click on the name (or use **Properties** on the right). Update the following:
+   - **General:** Run whether user is logged on or not
+   - **Conditions &gt; Power:** Uncheck "Start the task only if the computer is on AC power"
+   - **Actions (optional):** Select where the program starts from. This can be helpful when using relative paths in the code. The R package `taskscheduleR` also doesn't play nicely with `here::here()`.  </code></pre>
 <p>It might seem like a pain to still have to go into Task Scheduler after using <code>taskscheduleR</code>, so why not just do it in Windows from the start? Just personal preference, nothing more. I like to have as much traceable code as possible, but there are many other ways to do it!</p>
 </section>
 <section id="run-the-extraction" class="level3">
