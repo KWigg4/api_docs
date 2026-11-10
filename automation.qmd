@@ -32,19 +32,14 @@ taskscheduleR::taskscheduler_create(
 
 Open the created task in Windows Task Scheduler and adjust its properties as needed.  
 
-I usually do at least the following:  
+I usually do at least the following:
 
-  1. In Windows Task Scheduler, in the top left make sure you're in the folder `Task Scheduler Library`  
-
-  2. Find your task based on what you named it. In this instance, it'd be `REDCAP_API_test`. Double click on the name (or use `Properties` on the right)   
-
-  3. I update the following:   
-
-      a. General: Run whether user is logged on or not    
-
-      b. Conditions > Power: Uncheck "Start the task only if the computer is on AC power"    
-
-      c. (OPTIONAL) You can also go into `Actions` and select where the program starts from, might be helpful in instances with relative paths in the code (and the R package `taskscheduleR` doesn't play nicely with the `here::here()` package either).  
+    1. In Windows Task Scheduler, in the top left make sure you're in the folder `Task Scheduler Library`.
+    2. Find your task based on what you named it. In this instance, it'd be `REDCAP_API_test`.
+    3. Double click on the name (or use **Properties** on the right). Update the following:
+       - **General:** Run whether user is logged on or not
+       - **Conditions > Power:** Uncheck "Start the task only if the computer is on AC power"
+       - **Actions (optional):** Select where the program starts from. This can be helpful when using relative paths in the code. The R package `taskscheduleR` also doesn't play nicely with `here::here()`.  
 
 It might seem like a pain to still have to go into Task Scheduler after using `taskscheduleR`, so why not just do it in Windows from the start? Just personal preference, nothing more. I like to have as much traceable code as possible, but there are many other ways to do it!  
 
