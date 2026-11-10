@@ -1,8 +1,28 @@
+/**************************************************************************
+* REDCap API Workflow in SAS
+*
+* Demonstrates:
+*   1. Direct REDCap API extraction
+*   2. Reusable extraction using a SAS macro
+
+* DEPS: This depends on having redcap_uri and token_toy both as EnvVars
+**************************************************************************/
+
+/* Confirm that the API token is available (without directly printing it)
+	- EXPECT: length = 32  */
 %put Token length=%length(%sysget(token_toy));
 
-filename req temp;
-filename response temp;
 
+/**************************************************************************
+* VERSION 1: DIRECT API EXTRACTION
+**************************************************************************/
+
+/* Temp files for the API request and response */
+FILENAME req temp;
+FILENAME response temp;
+
+
+/* Build the REDCap API request */
 data _null_;
     file req;
     put "token=%sysget(token_toy)"
@@ -12,44 +32,62 @@ data _null_;
         '&rawOrLabel=label';
 run;
 
-proc http
-    url="%sysget(redcap_uri)"
-    method="POST"
-    in=req
-    out=response
-    ct="application/x-www-form-urlencoded";
-run;
+/* submit the request to REDCap */
+PROC HTTP
+    URL="%sysget(redcap_uri)"
+    METHOD="POST"
+    IN=req
+    OUT=response
+    CT="application/x-www-form-urlencoded";
+RUN;
 
-/* Determine project root */
-%let root=%sysfunc(prxchange(s/\\Code\\.*$//i,1,%sysget(SAS_EXECFILEPATH)));
-%put ROOT=&root;
 
-libname DataRaw "&root.\DataRaw";
+/* determine project root */
+%let root=%sysfunc(
+    prxchange(s/\\Code\\.*$//i, 1, %sysget(SAS_EXECFILEPATH))
+);
 
-/* Read REDCap response */
-proc import
-    datafile=response
-    out=DataRaw.demo_raw
+%PUT ROOT=&root;
+
+/* assign DataRaw libname */
+LIBNAME DataRaw "&root.\DataRaw";
+
+
+/* Import the REDCap response */
+PROC IMPORT
+    DATAFILE=response
+    OUT=DataRaw.demo_raw
     dbms=csv
     replace;
-    getnames=yes;
-    guessingrows=max;
-run;
+    GETNAMES=yes;
+    GUESSINGROWS=max;
+RUN;
 
 
-proc options option=sasautos;
-run;
-
-* MACRO VERSION * 
-/* Libraries */
-libname DataRaw "&root.\DataRaw";
-
-/* Tell SAS where macros live */
-options sasautos=(sasautos "&root.\Code\macros");
-
-%redcap_report(report_id=202139,out=admin0);
-proc contents data=_rcjson._all_; run;
-proc datasets lib=_rcjson memtype=data; quit;
+/* review the imported dataset */
+PROC CONTENTS DATA=DataRaw.demo_raw;
+RUN;
 
 
+/* clean up; rm tmp file references */
+FILENAME req clear;
+FILENAME response clear;
 
+
+/**************************************************************************
+* VERSION 2: REUSABLE MACRO
+*
+* Macro script: Code/macros/get_redcap_report.sas
+**************************************************************************/
+
+/* tell SAS where to find autocall macros */
+OPTIONS SASAUTOS=(sasautos "&root.\Code\macros");
+
+/* Run the extraction macro */
+%get_redcap_report(
+    report_id=207931,
+    out=demo
+);
+
+/* Review output */
+PROC CONTENTS DATA=DataRaw.demo; RUN;
