@@ -43,7 +43,7 @@ I usually do at least the following:
       a. General: Run whether user is logged on or not    
 
       b. Conditions > Power: Uncheck "Start the task only if the computer is on AC power"    
-      
+
       c. (OPTIONAL) You can also go into `Actions` and select where the program starts from, might be helpful in instances with relative paths in the code (and the R package `taskscheduleR` doesn't play nicely with the `here::here()` package either).  
 
 It might seem like a pain to still have to go into Task Scheduler after using `taskscheduleR`, so why not just do it in Windows from the start? Just personal preference, nothing more. I like to have as much traceable code as possible, but there are many other ways to do it!  
