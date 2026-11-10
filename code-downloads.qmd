@@ -65,7 +65,31 @@ Provides a reusable version of the REDCap extraction for use across reports and 
 {{< include Code/macros/get_redcap_report.sas >}}
 ```
 
-Code/macros/get_redcap_report.sas{.btn .btn-primary download="get_redcap_report.sas"}
+Code/macros/get_redcap_report.sas{.btn .btn-primary download="get_redcap_report.sas"}  
+
+### SAS extraction
+
+`Code/01_get_redcap_sas.sas`
+
+Submits the REDCap API request with `PROC HTTP` and saves the resulting SAS dataset.
+
+```sas
+{{< include Code/01_get_redcap_sas.sas >}}
+```
+
+[Download SAS extraction file](Code/01_get_redcap_sas.sas){.btn .btn-primary download="01_get_redcap_sas.sas"}  
+
+### SAS reusable macro
+
+`Code/macros/get_redcap_report.sas`
+
+Provides a reusable version of the REDCap extraction for use across reports and projects.
+
+```sas
+{{< include Code/macros/get_redcap_report.sas >}}
+```
+
+[Download SAS macro](Code/macros/get_redcap_report.sas){.btn .btn-primary download="get_redcap_report.sas"}
 
 
 :::  
