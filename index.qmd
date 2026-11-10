@@ -40,13 +40,10 @@ Save unchanged extracts to `DataRaw` and support repeatable runs.
 Credentials stay separate from the code and extracted data.
 :::
 
-# How to use this training
+# Training files
 
-Work through the training sections in order.
+Complete R and SAS programs are available on the **Code & Downloads** page. Code can be copied directly from the site or downloaded as the original `.R` and `.sas` files.
 
-When you reach the extraction examples, choose the path that matches the software you use:
-
-- **R:** `Code/01_get_redcap_R.R`
-- **SAS:** `Code/01_get_redcap_sas.sas`
-
-Complete example programs are available on the **Code & Downloads** page. You will be able to view and copy the code directly from the website or download the original files.
+- **R extraction:** `Code/01_get_redcap_R.R`
+- **R automation:** `Code/02_schedule.R`
+- **SAS extraction:** `Code/01_get_redcap_sas.sas`

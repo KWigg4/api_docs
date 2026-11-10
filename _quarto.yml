@@ -3,12 +3,23 @@ project:
 
 website:
   title: "REDCap API Training"
-  navbar:
-    left:
+
+  sidebar:
+    style: "docked"
+    background: "#F5F8F9"
+    search: true
+    contents:
       - href: index.qmd
-        text: Home
+        text: "Start Here"
+      - href: key-terms.qmd
+        text: "Key Terms"
+
+  page-navigation: true
 
 format:
   html:
     theme: cosmo
+    css: styles.css
     toc: true
+    toc-title: "On this page"
+    code-copy: true

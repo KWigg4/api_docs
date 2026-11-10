@@ -4,6 +4,19 @@
     "href": "index.html",
     "title": "Start Here",
     "section": "",
-    "text": "Overview\nThis learning lab follows the complete workflow from REDCap API access through secure data extraction.\n\n\n1. Enable API access\nRequest a project-specific REDCap API token.\n\n\n2. Store the token securely\nKeep credentials outside the code and project directory.\n\n\n3. Call REDCap\nUse the R or SAS example to retrieve the report.\n\n\n4. Reuse and automate\nSave unchanged extracts to DataRaw and support repeatable runs.\n\n\n\n\n\n\n\n\nNoteDesign principle\n\n\n\nCredentials stay separate from the code and extracted data.\n\n\n\n\nHow to use this training\nWork through the training sections in order.\nWhen you reach the extraction examples, choose the path that matches the software you use:\n\nR: Code/01_get_redcap_R.R\nSAS: Code/01_get_redcap_sas.sas\n\nComplete example programs are available on the Code & Downloads page. You will be able to view and copy the code directly from the website or download the original files."
+    "text": "Overview\nThis learning lab follows the complete workflow from REDCap API access through secure data extraction.\n\n\n1. Enable API access\nRequest a project-specific REDCap API token.\n\n\n2. Store the token securely\nKeep credentials outside the code and project directory.\n\n\n3. Call REDCap\nUse the R or SAS example to retrieve the report.\n\n\n4. Reuse and automate\nSave unchanged extracts to DataRaw and support repeatable runs.\n\n\n\n\n\n\n\n\nNoteDesign principle\n\n\n\nCredentials stay separate from the code and extracted data.\n\n\n\n\nHow to use this training\nWork through the training sections in order.\nWhen you reach the extraction examples, choose the path that matches the software you use:\n\nR: Code/01_get_redcap_R.R\nSAS: Code/01_get_redcap_sas.sas\n\nComplete example programs are available on the Code & Downloads page. You will be able to view and copy the code directly from the website or download the original files.",
+    "crumbs": [
+      "Start Here"
+    ]
+  },
+  {
+    "objectID": "key-terms.html",
+    "href": "key-terms.html",
+    "title": "Key Terms",
+    "section": "",
+    "text": "Key terms\nThis page will contain the key terms used throughout the REDCap API training.",
+    "crumbs": [
+      "Key Terms"
+    ]
   }
 ]
