@@ -14,7 +14,7 @@
     "href": "key-terms.html",
     "title": "Key Terms",
     "section": "",
-    "text": "How a REDCap API workflow starts\nimages/redcap_api_workflow.png{fig-alt=“REDCap API workflow showing one-time API access and token storage followed by repeated R or SAS requests to the REDCap API endpoint and responses saved to DataRaw”}\n\n\nKey terms\n\n\nAPI\nApplication Programming Interface. A structured way for one system to request data from another system.\n\n\nAPI token\nA unique secret used to authorize access to a particular REDCap project.\n\n\nEndpoint / URI\nThe web address that receives the API request.\n\n\nRequest\nThe call sent to REDCap, including the token and requested export settings.\n\n\nResponse\nThe data returned by REDCap after the request is processed.\n\n\nEnvironment variable\nA value stored outside the program and retrieved when the program runs.",
+    "text": "How a REDCap API workflow starts\n\n\n\nREDCap API workflow showing one-time API access and token storage followed by repeated R or SAS requests and responses\n\n\n\n\nKey terms\n\n\nKey terms\n\n\nAPI\nApplication Programming Interface. A structured way for one system to request data from another system.\n\n\nAPI token\nA unique secret used to authorize access to a particular REDCap project.\n\n\nEndpoint / URI\nThe web address that receives the API request.\n\n\nRequest\nThe call sent to REDCap, including the token and requested export settings.\n\n\nResponse\nThe data returned by REDCap after the request is processed.\n\n\nEnvironment variable\nA value stored outside the program and retrieved when the program runs.",
     "crumbs": [
       "Key Terms"
     ]

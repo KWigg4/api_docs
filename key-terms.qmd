@@ -4,9 +4,7 @@ title: "Key Terms"
 
 # How a REDCap API workflow starts
 
-![REDCap API workflow showing one-time API access and token storage followed by repeated R or SAS requests and responses](images/api-workflow.png)
-
-# Key terms
+![REDCap API workflow showing one-time API access and token storage followed by repeated R or SAS requests and responses](images/api_workflow.png)
 
 # Key terms
 
