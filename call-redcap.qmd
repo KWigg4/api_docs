@@ -41,22 +41,47 @@ The source extract should be preserved unchanged.
 
 ### Retrieve credentials
 
-Read the REDCap URI and project token using `%sysget()`:
+The REDCap URI is retrieved from the stored env variable:  
 
 ```sas
-url="%sysget(redcap_uri)"
-"token=%sysget(token_toy)"
+/* REDCap URI */
+%let redcap_uri=%sysget(redcap_uri);
+
+/* Confirm that the token is available */
+%put Token length=%length(%sysget(token_toy));
+```
+
+The API token is retrieved with `%sysget(token_toy)` when the request body is created.
+
+### Build the request
+
+```sas
+data _null_;
+    file req;
+
+    put "token=%sysget(token_toy)"
+        '&content=report'
+        '&report_id=207931'
+        '&format=csv'
+        '&rawOrLabel=label';
+run;
 ```
 
 ### Submit the API request
 
-Use `PROC HTTP` to send the request to REDCap.
+```sas
+proc http
+    url="%sysget(redcap_uri)"
+    method="POST"
+    in=req
+    out=response
+    ct="application/x-www-form-urlencoded";
+run;
+```
 
 ### Save the raw extract
 
-Import the response and save the resulting dataset in `DataRaw`.
-
-The source extract should be preserved unchanged.
+The response is imported and saved unchanged in `DataRaw`.
 
 :::
 
@@ -64,10 +89,4 @@ The source extract should be preserved unchanged.
 ## Expected result
 
 The toy REDCap report produces **100 records and 14 variables**. The source extract is saved in `DataRaw`.
-:::
-
-::: {.callout-important}
-## Preserve the raw data
-
-Do not clean, recode, deduplicate, or otherwise change the source extract while writing it to `DataRaw`.
 :::
