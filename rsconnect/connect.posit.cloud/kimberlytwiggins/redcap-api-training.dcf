@@ -1,0 +1,10 @@
+name: redcap-api-training
+title:
+username: kimberlytwiggins
+account: kimberlytwiggins
+server: connect.posit.cloud
+hostUrl: https://api.connect.posit.cloud/v1
+appId: 01a1a34f-629d-56dc-426a-73307967c227
+bundleId:
+url: https://connect.posit.cloud/kimberlytwiggins/content/01a1a34f-629d-56dc-426a-73307967c227
+version: 1

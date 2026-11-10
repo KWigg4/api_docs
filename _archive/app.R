@@ -2,12 +2,6 @@ library(shiny)
 
 repo_url <- "https://github.com/KWigg4/api_docs.git"
 
-if (dir.exists("images")) {
-	addResourcePath("images", normalizePath("images"))
-} else if (dir.exists("../images")) {
-	addResourcePath("images", normalizePath("../images"))
-}
-
 # Helpers -----------------------------------------------------------------
 
 section_card <- function(title, ...) {
@@ -292,9 +286,11 @@ body {
 "
 
 # script files -------------------
-r_file <- "../Code/01_get_redcap_R.R"
-r_auto_file <- "../Code/02_schedule.R"
-sas_file <- "../Code/01_get_redcap_sas.sas"
+addResourcePath("images", normalizePath("images"))
+
+r_file <- "Code/01_get_redcap_R.R"
+r_auto_file <- "Code/02_schedule.R"
+sas_file <- "Code/01_get_redcap_sas.sas"
 
 r_code <- paste(readLines(r_file, warn = FALSE), collapse = "\n")
 r_auto_code <- paste(readLines(r_auto_file, warn = FALSE), collapse = "\n")
@@ -305,9 +301,29 @@ sas_code <- paste(readLines(sas_file, warn = FALSE), collapse = "\n")
 ui <- fluidPage(
 	tags$head(
 		tags$title("REDCap, API, Automation"),
-		tags$style(HTML(css))
+		tags$style(HTML(css)),
+		tags$script(HTML("
+		$(document).on('click', '.copy-button', function() {
+			var button = $(this);
+			var text = button.attr('data-copy');
+			var textarea = document.createElement('textarea');
+
+			textarea.value = text;
+			textarea.style.position = 'fixed';
+			textarea.style.opacity = '0';
+			document.body.appendChild(textarea);
+			textarea.select();
+			document.execCommand('copy');
+			document.body.removeChild(textarea);
+
+			var original = button.text();
+			button.text('Copied!');
+			setTimeout(function() {
+				button.text(original);
+			}, 1200);
+		});
+	"))
 	),
-	
 	tags$header(
 		class = "hero",
 		tags$h1("REDCap, API, Automation"),
@@ -365,9 +381,7 @@ ui <- fluidPage(
 						term_card("Endpoint or URI", "The REDCap web address that receives the API request."),
 						term_card("Request", "The call sent to REDCap, including the token and requested export settings."),
 						term_card("Response", "The data returned by REDCap after the request is processed."),
-						term_card("Environment variable", "A value stored outside the program and retrieved when the program runs."),
-						term_card("DataRaw", "The protected project location for unchanged source data retrieved from REDCap."),
-						term_card("Automation", "A scheduled process that runs the extraction without requiring manual steps.")
+						term_card("Environment variable", "A value stored outside the program and retrieved when the program runs.")
 					)
 				)
 			),
